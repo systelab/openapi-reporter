@@ -6,7 +6,7 @@ import { SpecSummaryData } from '../../../model/spec-summary-data.model';
 @Component({
 	selector: 'app-spec-summary',
 	templateUrl: 'spec-summary.component.html',
-	styleUrls:   ['spec-summary.component.css']
+	styleUrls: ['spec-summary.component.scss']
 
 })
 export class SpecSummaryComponent {
