@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { EndpointData } from '../model/endpoint-data.model';
+import { SpecEndpointData } from '../model/spec-endpoint-data.model';
 import { OpenAPIEndpoint } from '../model/openapi.model';
 
 @Injectable({
@@ -8,12 +8,12 @@ import { OpenAPIEndpoint } from '../model/openapi.model';
 })
 export class EndpointService {
 
-	public parseFromOpenAPI(url: string, method: string, openAPIEndpoint: OpenAPIEndpoint): EndpointData {
+	public parseFromOpenAPI(url: string, method: string, openAPIEndpoint: OpenAPIEndpoint): SpecEndpointData {
 
-		const name: string = `{{method.toUpperCase()}} {{url}}`;
+		const name = `{{method.toUpperCase()}} {{url}}`;
 		return {
 			name: name,
-			description: ""
+			description: 'Endpoint content goes here'
 		};
 	}
 }

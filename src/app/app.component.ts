@@ -6,7 +6,7 @@ import { DialogService } from 'systelab-components/widgets/modal';
 
 import { SpecReportData } from './model/spec-report-data.model';
 import { OpenAPIDocument } from './model/openapi.model';
-import { ReporterDialog, ReporterDialogParameters } from './features/reporter/reporter-dialog.component';
+import { ReporterDialogComponent, ReporterDialogParameters } from './features/reporter/reporter-dialog.component';
 import { LoginDialog, LoginDialogParameters } from './features/login/login-dialog.component';
 
 
@@ -108,7 +108,7 @@ export class AppComponent {
 
 	public doShowReport(show: boolean) {
 		this.showReport = show;
-		const parameters: ReporterDialogParameters = ReporterDialog.getParameters();
+		const parameters: ReporterDialogParameters = ReporterDialogComponent.getParameters();
 		parameters.username = this.username;
 		parameters.password = this.password;
 		parameters.server = this.server;
@@ -131,7 +131,7 @@ export class AppComponent {
 			return;
 		}
 
-		this.dialogService.showDialog(ReporterDialog, parameters)
+		this.dialogService.showDialog(ReporterDialogComponent, parameters)
 			.subscribe(
 				(result) => {
 
