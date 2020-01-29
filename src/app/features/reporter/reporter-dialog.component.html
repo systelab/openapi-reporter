@@ -1,0 +1,31 @@
+<systelab-dialog-header (close)="close()">Report to Jama</systelab-dialog-header>
+<div class="slab-flex-1 slab-overflow-container container-fluid">
+
+	<form class="pt-4">
+		<div class="row">
+			<div class="col-md-3">
+				<label class="col-form-label">Project</label>
+			</div>
+			<div class="col-md-9">
+				<project-combobox #projectComboBox [(id)]="selectedProjectId"
+													[(description)]="selectedProjectName"
+													[emptyElement]="false"></project-combobox>
+			</div>
+		</div>
+
+		<div class="row mt-2">
+			<div class="col-md-3">
+				<label class="col-form-label">Specifications Set</label>
+			</div>
+			<div class="col-md-9">
+				<!-- <test-plan-combobox #testPlanComboBox [(id)]="selectedTestPlanId"
+													[(description)]="selectedTestPlanName"
+													[emptyElement]="false"></test-plan-combobox>
+ -->
+			</div>
+		</div>
+	</form>
+</div>
+<systelab-dialog-bottom>
+	<button type="button" class="btn ml-auto" (click)="doRun()" [disabled]="!isValidForm()">Report</button>
+</systelab-dialog-bottom>
