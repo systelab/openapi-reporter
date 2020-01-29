@@ -16,8 +16,8 @@
 			</div>
 		</file-drop>
 
-		<help *ngIf="!!report"></help>
-		
+		<help *ngIf="!report"></help>
+
 		<ng-container *ngIf="report">
 			<app-spec-report
 				[report]="!!report"
@@ -26,5 +26,6 @@
 			</app-spec-report>
 		</ng-container>
 
+	</div>
 	<app-footer class="no-print"></app-footer>
 </div>
