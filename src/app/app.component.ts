@@ -20,7 +20,7 @@ export class AppComponent {
 	public report: SpecReportData = null;
 
 	public showUser = false;
-	public showReport = false;
+	public showUpload = false;
 
 	public username = '';
 	public password = '';
@@ -37,13 +37,13 @@ export class AppComponent {
 		this.update();
 	}
 
-	private _showResults = true;
-	get showResults(): boolean {
-		return this._showResults;
+	private _showSpecifications = true;
+	get showSpecifications(): boolean {
+		return this._showSpecifications;
 	}
 
-	set showResults(show: boolean) {
-		this._showResults = show;
+	set showSpecifications(show: boolean) {
+		this._showSpecifications = show;
 		this.update();
 	}
 
@@ -106,8 +106,8 @@ export class AppComponent {
 				});
 	}
 
-	public doShowReport(show: boolean) {
-		this.showReport = show;
+	public doShowUpload(show: boolean) {
+		this.showUpload = show;
 		const parameters: ReporterDialogParameters = ReporterDialogComponent.getParameters();
 		parameters.username = this.username;
 		parameters.password = this.password;

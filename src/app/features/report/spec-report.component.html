@@ -1,14 +1,19 @@
 <h1>{{report.title}}</h1>
 <div>
-	<app-spec-summary [summary]="report.summary"></app-spec-summary>
+	<app-spec-summary
+		*ngIf="showSummary"
+		[summary]="report.summary">
+	</app-spec-summary>
 
-	<h2>Endpoints</h2>
-	<div *ngFor="let endpoint of report.endpoints">
-		<app-spec-endpoint [endpoint]="endpoint"></app-spec-endpoint>
-	</div>
-
-	<h2>Models</h2>
-	<div *ngFor="let model of report.models">
-		<app-spec-model [model]="model"></app-spec-model>
-	</div>
+	<ng-container *ngIf="showSpecifications">
+		<h2>Endpoints</h2>
+		<div *ngFor="let endpoint of report.endpoints">
+			<app-spec-endpoint [endpoint]="endpoint"></app-spec-endpoint>
+		</div>
+	
+		<h2>Models</h2>
+		<div *ngFor="let model of report.models">
+			<app-spec-model [model]="model"></app-spec-model>
+		</div>	
+	</ng-container>
 </div>

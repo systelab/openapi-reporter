@@ -1,6 +1,11 @@
 <div class="d-flex flex-column w-100">
 
-	<app-navbar [(toggleResults)]="showResults" [(toggleSummary)]="showSummary" (user)="doShowUser(true)" (report)="doShowReport(true)"></app-navbar>
+	<app-navbar
+		[(toggleSpecifications)]="showSpecifications"
+		[(toggleSummary)]="showSummary"
+		(user)="doShowUser(true)"
+		(upload)="doShowUpload(true)">
+	</app-navbar>
 
 	<div class="container">
 		<p></p>
@@ -11,9 +16,14 @@
 			</div>
 		</file-drop>
 
-		<help *ngIf="testSuites.length===0"></help>
-		<ng-container *ngIf="showSummary && showResults">
-			<app-spec-report [report]="report'"></app-spec-report>
+		<help *ngIf="!!report"></help>
+		
+		<ng-container *ngIf="report">
+			<app-spec-report
+				[report]="!!report"
+				[showSummary]="showSummary"
+				[showSpecifications]="showSpecifications">
+			</app-spec-report>
 		</ng-container>
 
 	<app-footer class="no-print"></app-footer>

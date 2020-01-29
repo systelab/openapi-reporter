@@ -15,7 +15,7 @@ export class NavbarComponent {
 	@Output() user = new EventEmitter();
 	@Output() upload = new EventEmitter();
 
-	public doResultsClick() {
+	public doSpecificationsClick() {
 		this.toggleSpecifications = !this.toggleSpecifications;
 		this.toggleSpecificationsChange.emit(this.toggleSpecifications);
 	}
