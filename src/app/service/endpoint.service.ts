@@ -10,10 +10,18 @@ export class EndpointService {
 
 	public parseFromOpenAPI(url: string, method: string, openAPIEndpoint: OpenAPIEndpoint): SpecEndpointData {
 
-		const name = `{{method.toUpperCase()}} {{url}}`;
+		const name = `${method.toUpperCase()} ${url}`;
+
+		let description = openAPIEndpoint.summary;
+		if (!!openAPIEndpoint.parameters) {
+			description += '<br><br>';
+			description += '<b>Parameters:</b><br>';
+			description += 'Pending to define parameters';
+		}
+
 		return {
 			name: name,
-			description: 'Endpoint content goes here'
+			description: description
 		};
 	}
 }
