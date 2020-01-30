@@ -4,6 +4,7 @@ import { SpecSummaryData } from './spec-summary-data.model';
 
 export class SpecReportData {
 	title: string;
+	version: string;
 	summary: SpecSummaryData;
 	endpoints: SpecEndpointData[];
 	models: SpecModelData[];
