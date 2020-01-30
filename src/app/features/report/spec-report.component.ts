@@ -9,7 +9,7 @@ import { SpecReportData } from '../../model/spec-report-data.model';
 })
 export class SpecReportComponent {
 
-	@Input() public report: SpecReportData = null;
+	@Input() public report: SpecReportData;
 	@Input() public showSummary = true;
 	@Input() public showSpecifications = true;
 
