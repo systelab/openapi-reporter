@@ -1,4 +1,2 @@
-<h2 class="mb-2 mt-4">{{endpoint.name}}</h2>
-<div class="container mt-3">
-	{{endpoint.description}}
-</div>
+<h6 class="mt-4">{{endpoint.name}}</h6>
+<div class="container mt-3" [innerHTML]="endpoint.description"></div>
