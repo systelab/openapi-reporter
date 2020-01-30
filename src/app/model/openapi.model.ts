@@ -17,7 +17,7 @@ export interface OpenAPIServer {
 }
 
 export interface OpenAPIPath {
-	paths: { [url: string]: { [method: string]: OpenAPIEndpoint } };
+	[method: string]: OpenAPIEndpoint;
 }
 
 export interface OpenAPIEndpoint {
