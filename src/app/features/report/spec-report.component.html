@@ -1,19 +1,22 @@
-<h1>{{report.title}}</h1>
-<div>
-	<app-spec-summary
-		*ngIf="showSummary"
-		[summary]="report.summary">
-	</app-spec-summary>
+<div class="mt-4">
+	<h1>{{report.title}} <span style="font-size: 14px;">{{report.version}}</span></h1>
+	<hr>
+	<div class="ml-3">
+		<app-spec-summary
+			*ngIf="showSummary && !!report.summary"
+			[summary]="report.summary">
+		</app-spec-summary>
 
-	<ng-container *ngIf="showSpecifications">
-		<h2>Endpoints</h2>
-		<div *ngFor="let endpoint of report.endpoints">
-			<app-spec-endpoint [endpoint]="endpoint"></app-spec-endpoint>
-		</div>
-	
-		<h2>Models</h2>
-		<div *ngFor="let model of report.models">
-			<app-spec-model [model]="model"></app-spec-model>
-		</div>	
-	</ng-container>
+		<ng-container *ngIf="showSpecifications">
+			<h3 class="mt-4">Endpoints</h3>
+			<div class="ml-4 mb-5" *ngFor="let endpoint of report.endpoints">
+				<app-spec-endpoint [endpoint]="endpoint"></app-spec-endpoint>
+			</div>
+		
+			<h3 class="mt-4">Models</h3>
+			<div class="ml-4 mb-5" *ngFor="let model of report.models">
+				<app-spec-model [model]="model"></app-spec-model>
+			</div>	
+		</ng-container>
+	</div>
 </div>
