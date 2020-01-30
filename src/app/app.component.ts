@@ -8,6 +8,7 @@ import { SpecReportData } from './model/spec-report-data.model';
 import { OpenAPIDocument } from './model/openapi.model';
 import { ReporterDialogComponent, ReporterDialogParameters } from './features/reporter/reporter-dialog.component';
 import { LoginDialog, LoginDialogParameters } from './features/login/login-dialog.component';
+import { ReportService } from './service/report.service';
 
 
 @Component({
@@ -16,9 +17,6 @@ import { LoginDialog, LoginDialogParameters } from './features/login/login-dialo
 })
 export class AppComponent {
 
-	public uploadingFiles: string[] = [];
-	public report: SpecReportData = null;
-
 	public showUser = false;
 	public showUpload = false;
 
@@ -26,6 +24,9 @@ export class AppComponent {
 	public password = '';
 	public server = 'https://snowjamaserver.systelab.net/rest/latest';
 	public numberOfSteps = 1;
+
+	public report: SpecReportData;
+	public fileDropError: string;
 
 	private _showSummary = true;
 	get showSummary(): boolean {
@@ -50,39 +51,50 @@ export class AppComponent {
 	constructor(private http: HttpClient,
 				private ref: ChangeDetectorRef,
 				protected dialogService: DialogService,
-				// protected testSuiteService: TestSuiteService,
-				// protected testCaseService: TestCaseService,
+				protected reportService: ReportService,
 				private toastr: ToastrService) {
 	}
 
 	public fileDrop(event: UploadEvent) {
 
+		this.fileDropError = undefined;
+
 		const files: UploadFile[] = event.files;
-
-		for (const file of files) {
-			const fileEntry = file.fileEntry as FileSystemFileEntry;
-			fileEntry.file(info => {
-				this.uploadingFiles.push(info.name);
-
-				const reader = new FileReader();
-				reader.onload = (e: any) => {
-					if (info.name.endsWith('.json')) {
-						const newReport: OpenAPIDocument = JSON.parse(e.target.result);
-						this.report = null; // TODO: parsing report
-					}
-				};
-				reader.onloadend = (e: any) => {
-					for (let i = this.uploadingFiles.length - 1; i >= 0; i--) {
-						if (this.uploadingFiles[i] === info.name) {
-							this.uploadingFiles.splice(i, 1);
-						}
-					}
-
-					this.update();
-				};
-				reader.readAsText(info);
-			});
+		if (files.length !== 1) {
+			this.fileDropError = 'Only a single OpenAPI specification file can be processed at a time.';
+			return;
 		}
+
+		const fileEntry = files[0].fileEntry as FileSystemFileEntry;
+		if (!fileEntry.name.endsWith('.json')) {
+			this.fileDropError = 'Dropped file has not a JSON extension.';
+			return;
+		}
+
+		fileEntry.file(info => {
+
+			const reader = new FileReader();
+			reader.onload = (e: any) => {
+
+				let openAPIDocument: OpenAPIDocument;
+				try {
+					openAPIDocument = JSON.parse(e.target.result);
+				} catch (e) {
+					this.fileDropError = 'Dropped file is not a valid JSON';
+					return;
+				}
+
+				this.report = undefined;
+				try {
+					this.report = this.reportService.parseFromOpenAPI(openAPIDocument);
+				} catch (e) {
+					this.fileDropError = 'Unexpected error while parsing JSON: ' + e;
+					return;
+				}
+			};
+
+			reader.readAsText(info);
+		});
 	}
 
 	public update() {

@@ -15,12 +15,15 @@
 				<p>Drop your OpenAPI JSON file here</p>
 			</div>
 		</file-drop>
+		<div *ngIf="!!fileDropError" class="mt-3 alert alert-danger" role="alert">
+			<strong>ERROR: </strong>{{fileDropError}}
+		</div>
 
 		<help *ngIf="!report"></help>
 
-		<ng-container *ngIf="report">
+		<ng-container *ngIf="!!report">
 			<app-spec-report
-				[report]="!!report"
+				[report]="report"
 				[showSummary]="showSummary"
 				[showSpecifications]="showSpecifications">
 			</app-spec-report>
