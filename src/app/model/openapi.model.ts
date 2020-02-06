@@ -39,7 +39,8 @@ export interface OpenAPIParameter {
 }
 
 export enum OpenAPIParameterType {
-	Path = "path"
+	Path = "path",
+	Query = "query"
 }
 
 export interface OpenAPIRequestBody {
