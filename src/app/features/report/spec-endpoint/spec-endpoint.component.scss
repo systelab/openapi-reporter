@@ -1,0 +1,64 @@
+div.endpoint-head {
+    display: flex;
+    padding: 6px 16px;
+    align-items: center;
+    cursor: pointer;
+}
+
+div.endpoint-head .method {
+    font-size: 14px;
+    font-weight: 700;
+    min-width: 80px;
+    padding: 6px 15px;
+    text-align: center;
+    border-radius: 3px;
+    background: #000;
+    text-shadow: 0 1px 0 rgba(0,0,0,.1);
+    font-family: sans-serif;
+    color: #fff;
+}
+
+div.endpoint-head .method.get {
+    background: #61affe;
+}
+
+div.endpoint-head .method.post {
+    background: #49cc90;
+}
+
+div.endpoint-head .method.put {
+    background: #fca130;
+}
+
+div.endpoint-head .method.patch {
+    background: #fca130;
+}
+
+div.endpoint-head .method.delete {
+    background: #f93e3e;
+}
+
+div.endpoint-head .path {
+    display: flex;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-small);
+    font-weight: bold;
+    align-items: center;
+    overflow-wrap: break-word;
+    word-break: break-all;
+}
+
+div.endpoint-body .summary {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-small);
+}
+
+div.endpoint-body .section-title {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-small);
+    font-weight: bold;
+}
+
+div.header-cell {
+    font-weight: bold;
+}

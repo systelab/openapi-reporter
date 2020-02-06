@@ -1,2 +1,65 @@
-<h6 class="mt-4">{{endpoint.name}}</h6>
-<div class="container mt-3" [innerHTML]="endpoint.description"></div>
+<div class="endpoint-head mt-4">
+    <div class="method {{endpoint.method.toLowerCase()}}">{{endpoint.method}}</div>
+    <div class="path ml-2">{{endpoint.url}}</div>
+</div>
+<div class="endpoint-body mt-2 ml-4">
+
+    <div class="summary mb-3">{{endpoint.summary}}</div>
+
+    <div class="section mb-3" *ngIf="endpoint.pathParameters.length > 0">
+        <div class="section-title">Path Parameters</div>
+        <div class="section-content">
+            <ul>
+                <li *ngFor="let pathParameter of endpoint.pathParameters">
+                    <i>&#123; {{pathParameter.name}} &#125;</i>
+                    <ng-container *ngIf="!!pathParameter.type">&nbsp;&ndash;&nbsp;{{pathParameter.type}}</ng-container>
+                    &ndash;&nbsp;{{pathParameter.description}}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section mb-3" *ngIf="endpoint.queryStrings.length > 0">
+        <div class="section-title">Query Strings</div>
+        <div class="section-content">
+            <div class="container query-string-table mt-3 ml-4">
+                <div class="row">
+                    <div class="col-1 header-cell">Name</div>
+                    <div class="col-1 header-cell">Type</div>
+                    <div class="col-3 header-cell">Description</div>
+                    <div class="col-1 header-cell">Required</div>
+                    <div class="col-1 header-cell">Default</div>
+                </div>
+                <div class="row" *ngFor="let queryString of endpoint.queryStrings">
+                    <div class="col-1 cell">{{queryString.name}}</div>
+                    <div class="col-1 cell">{{queryString.type}}</div>
+                    <div class="col-3 cell">{{queryString.description}}</div>
+                    <div class="col-1 cell">{{queryString.required}}</div>
+                    <div class="col-1 cell">{{queryString.default}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section mb-3" *ngIf="!!endpoint.requestBody">
+        <div class="section-title">Request Body</div>
+        <div class="section-content">
+            <ul>
+                <li>
+                    <i>{{endpoint.requestBody.mediaType}}</i>
+                    <span *ngIf="!!endpoint.requestBody.description">&nbsp;&ndash;&nbsp;{{endpoint.requestBody.description}}</span>
+                    <ul>
+                        <li>Format: <i>{{endpoint.requestBody.modelName}}</i></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section mb-3" *ngIf="endpoint.responses.length > 0">
+        <div class="section-title">Responses</div>
+        <div class="section-content">
+            List of responses goes here
+        </div>
+    </div>
+</div>
