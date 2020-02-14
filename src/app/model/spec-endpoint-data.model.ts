@@ -23,10 +23,17 @@ export class SpecEndpointRequestBody {
 export class SpecEndpointResponse {
 	statusCode: number;
 	description: string;
-	mediaType: string;
+	mediaType?: string;
 	modelId?: string;
 	modelName?: string;
+	headers?: SpecEndpointResponseHeader[];
 	example?: string;
+}
+
+export class SpecEndpointResponseHeader {
+	name: string;
+	description: string;
+	type?: string;
 }
 
 export class SpecEndpointData {
