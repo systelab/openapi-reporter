@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import { SpecEndpointData, SpecEndpointPathParameter, SpecEndpointQueryString, SpecEndpointRequestBody } from '@model';
+import { SpecEndpointData, SpecEndpointPathParameter, SpecEndpointQueryString, SpecEndpointRequestBody, SpecEndpointResponse, SpecEndpointResponseHeader } from '@model';
 import { OpenAPIEndpoint, OpenAPIParameter, OpenAPIParameterType } from '@model';
-import { OpenAPIRequestBody, OpenAPIResponse } from '@model';
+import { OpenAPIRequestBody, OpenAPIResponse, OpenAPIHeader } from '@model';
 
 
 @Injectable({
@@ -31,9 +31,11 @@ export class EndpointService {
 			this.addRequestBodyFromOpenAPI(endpoint, openAPIEndpoint.requestBody);
 		}
 
-		if (!!openAPIEndpoint.responses)
+		const responseStatusCodes: string[] = Object.keys(openAPIEndpoint.responses);
+		for (const statusCode in responseStatusCodes)
 		{
-			// this.addResponsesFromOpenAPI(endpoint, openAPIEndpoint.responses);
+			const openAPIResponse: OpenAPIResponse = openAPIEndpoint.responses[statusCode];
+			this.addResponseFromOpenAPI(endpoint, statusCode, openAPIResponse);
 		}
 
 		return endpoint;
@@ -80,8 +82,7 @@ export class EndpointService {
 	private addRequestBodyFromOpenAPI(endpoint: SpecEndpointData, openAPIRequestBody: OpenAPIRequestBody)
 	{
 		const mediaTypes: string[] = Object.keys(openAPIRequestBody.content);
-		if (mediaTypes.length > 0)
-		{
+		if (mediaTypes.length > 0) {
 			const mediaType = mediaTypes[0];
 			const schema = openAPIRequestBody.content[mediaType].schema;
 			const example = openAPIRequestBody.content[mediaType].example;
@@ -102,9 +103,50 @@ export class EndpointService {
 		}
 	}
 
-	private addResponsesFromOpenAPI(endpoint: SpecEndpointData, openAPIResponses: OpenAPIResponse[])
+	private addResponseFromOpenAPI(endpoint: SpecEndpointData, statusCode: string, openAPIResponse: OpenAPIResponse)
 	{
-		
+		const response: SpecEndpointResponse = {
+			statusCode: +statusCode,
+			description: openAPIResponse.description,
+		};
+
+		if (!!openAPIResponse.headers) {
+			response.headers = [];
+			const headerNames: string[] = Object.keys(openAPIResponse.headers);
+			for (const headerName in headerNames) {
+				const openAPIHeader: OpenAPIHeader = openAPIResponse.headers[headerName];
+				const responseHeader: SpecEndpointResponseHeader = {
+					name: headerName,
+					description: openAPIHeader.description
+				};
+
+				if (openAPIHeader.schema.type) {
+					responseHeader.type = openAPIHeader.schema.type;
+				}
+
+				response.headers.push(responseHeader);
+			}
+		}
+
+		const mediaTypes: string[] = Object.keys(openAPIResponse.content);
+		if (mediaTypes.length > 0) {
+			const mediaType: string = mediaTypes[0];
+			response.mediaType = mediaType;
+
+			const schema = openAPIResponse.content[mediaType].schema;
+			const schemaReference = schema["$ref"];
+			const modelName: string = schemaReference.startsWith("#/components/schemas/") ? schemaReference.substr(21) : schemaReference;
+			if (modelName) {
+				response.modelName = modelName;
+			}
+
+			const example = openAPIResponse.content[mediaType].example;
+			if (!!example) {
+				response.example = example;
+			}
+		}
+
+		endpoint.responses.push(response);
 	}
 
 }
