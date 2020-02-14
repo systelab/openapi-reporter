@@ -8,7 +8,7 @@ import { SpecReportData } from './model/spec-report-data.model';
 import { OpenAPIDocument } from './model/openapi.model';
 import { ReporterDialogComponent, ReporterDialogParameters } from './features/reporter/reporter-dialog.component';
 import { LoginDialog, LoginDialogParameters } from './features/login/login-dialog.component';
-import { ReportService } from './service/report.service';
+import { ReportService } from './services/report.service';
 
 
 @Component({

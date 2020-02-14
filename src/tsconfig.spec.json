@@ -3,6 +3,15 @@
   "compilerOptions": {
     "outDir": "../out-tsc/spec",
     "baseUrl": "./",
+    "paths": {
+      "environments/*": ["environments/*"],
+      "@common/*": ["app/common/*"],
+      "@components": ["app/components/index.ts"],
+      "@features/*": ["app/features/*"],
+      "@jama/*": ["app/jama/*"],
+      "@model": ["app/model/index.ts"],
+      "@services/*": ["app/service/index.ts"]
+    },
     "module": "commonjs",
     "target": "es5",
     "types": [

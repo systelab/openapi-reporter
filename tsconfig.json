@@ -2,6 +2,16 @@
   "compileOnSave": false,
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
+    "baseUrl": "src/",
+    "paths": {
+      "environments/*": ["environments/*"],
+      "@common/*": ["app/common/*"],
+      "@components": ["app/components/index.ts"],
+      "@features/*": ["app/features/*"],
+      "@jama/*": ["app/jama/*"],
+      "@model": ["app/model/index.ts"],
+      "@services/*": ["app/service/index.ts"]
+    },
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",

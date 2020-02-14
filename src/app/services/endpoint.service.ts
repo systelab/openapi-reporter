@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { SpecEndpointData, SpecEndpointPathParameter, SpecEndpointQueryString, SpecEndpointRequestBody } from '../model/spec-endpoint-data.model';
-import { OpenAPIEndpoint, OpenAPIParameter, OpenAPIParameterType, OpenAPIRequestBody } from '../model/openapi.model';
+import { SpecEndpointData, SpecEndpointPathParameter, SpecEndpointQueryString, SpecEndpointRequestBody } from '@model';
+import { OpenAPIEndpoint, OpenAPIParameter, OpenAPIParameterType } from '@model';
+import { OpenAPIRequestBody, OpenAPIResponse } from '@model';
+
 
 @Injectable({
 	providedIn: 'root'
@@ -27,6 +29,11 @@ export class EndpointService {
 		if (!!openAPIEndpoint.requestBody)
 		{
 			this.addRequestBodyFromOpenAPI(endpoint, openAPIEndpoint.requestBody);
+		}
+
+		if (!!openAPIEndpoint.responses)
+		{
+			// this.addResponsesFromOpenAPI(endpoint, openAPIEndpoint.responses);
 		}
 
 		return endpoint;
@@ -92,7 +99,12 @@ export class EndpointService {
 			}
 	
 			endpoint.requestBody = requestBody;
-			console.log("Endpoint Request Body", endpoint.requestBody);
 		}
 	}
+
+	private addResponsesFromOpenAPI(endpoint: SpecEndpointData, openAPIResponses: OpenAPIResponse[])
+	{
+		
+	}
+
 }
