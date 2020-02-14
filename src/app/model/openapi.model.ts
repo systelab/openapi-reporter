@@ -51,7 +51,13 @@ export interface OpenAPIRequestBody {
 
 export interface OpenAPIResponse {
 	description: string;
-	content: { [mediaType: string]: OpenAPIContent };
+	headers?: { [headerName: string]: OpenAPIHeader };
+	content?: { [mediaType: string]: OpenAPIContent };
+}
+
+export interface OpenAPIHeader {
+	description: string;
+	schema: any;
 }
 
 export interface OpenAPIContent {
