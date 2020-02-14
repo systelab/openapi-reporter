@@ -3,10 +3,12 @@ import { ProjectsService } from '../jama/api/projects.service';
 import { Observable } from 'rxjs';
 import { AbstractApiComboBox } from 'systelab-components/widgets/combobox/abstract-api-combobox.component';
 import { map } from 'rxjs/internal/operators';
-import { ProjectData } from '../model/project-data.model';
+
+import { ProjectData } from '@model';
+
 
 @Component({
-	selector:    'project-combobox',
+	selector: 'project-combobox',
 	templateUrl: '../../../node_modules/systelab-components/html/abstract-combobox.component.html'
 })
 

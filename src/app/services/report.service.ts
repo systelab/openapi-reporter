@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 
-import { SpecReportData } from '../model/spec-report-data.model';
-import { OpenAPIDocument, OpenAPIPath, OpenAPIEndpoint } from '../model/openapi.model';
+import { SpecReportData } from '@model';
+import { OpenAPIDocument, OpenAPIPath, OpenAPIEndpoint } from '@model';
+import { SpecEndpointComponent } from '@features/report/spec-endpoint/spec-endpoint.component';
 import { EndpointService } from './endpoint.service';
-import { SpecEndpointComponent } from '../features/report/spec-endpoint/spec-endpoint.component';
+
 
 @Injectable({
 	providedIn: 'root'
