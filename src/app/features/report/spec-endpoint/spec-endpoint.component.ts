@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { SpecEndpointData } from '../../../model/spec-endpoint-data.model';
+import { SpecEndpointData } from '@model';
 
 @Component({
 	selector: 'app-spec-endpoint',
