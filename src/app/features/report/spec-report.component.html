@@ -9,7 +9,7 @@
 
 		<ng-container *ngIf="showSpecifications">
 			<h3 class="mt-4">Endpoints</h3>
-			<div class="ml-4 mb-5" *ngFor="let endpoint of report.endpoints">
+			<div class="ml-4" *ngFor="let endpoint of report.endpoints">
 				<app-spec-endpoint [endpoint]="endpoint"></app-spec-endpoint>
 			</div>
 		
