@@ -81,25 +81,31 @@ export class EndpointService {
 
 	private addRequestBodyFromOpenAPI(endpoint: SpecEndpointData, openAPIRequestBody: OpenAPIRequestBody)
 	{
-		const mediaTypes: string[] = Object.keys(openAPIRequestBody.content);
-		if (mediaTypes.length > 0) {
-			const mediaType = mediaTypes[0];
-			const schema = openAPIRequestBody.content[mediaType].schema;
-			const example = openAPIRequestBody.content[mediaType].example;
-			const schemaReference = schema["$ref"];
-			const modelName = schemaReference.startsWith("#/components/schemas/") ? schemaReference.substr(21) : schemaReference;
+		if (openAPIRequestBody.content)
+		{
+			const mediaTypes: string[] = Object.keys(openAPIRequestBody.content);
+			if (mediaTypes.length > 0) {
 
-			const requestBody: SpecEndpointRequestBody = {
-				description: openAPIRequestBody.description,
-				mediaType: mediaType,
-				modelName: modelName
-			};
+				const mediaType = mediaTypes[0];
+				const requestBody: SpecEndpointRequestBody = {
+					description: openAPIRequestBody.description,
+					mediaType: mediaType
+				}
 
-			if (!!example) {
-				requestBody.example = example;
+				const schema = openAPIRequestBody.content[mediaType].schema;
+				const schemaReference = schema["$ref"];
+				if (!!schemaReference) {
+					const modelName = schemaReference.startsWith("#/components/schemas/") ? schemaReference.substr(21) : schemaReference;
+					requestBody.modelName = modelName;
+				}
+
+				const example = openAPIRequestBody.content[mediaType].example;
+				if (!!example) {
+					requestBody.example = example;
+				}
+		
+				endpoint.requestBody = requestBody;
 			}
-	
-			endpoint.requestBody = requestBody;
 		}
 	}
 
@@ -140,9 +146,12 @@ export class EndpointService {
 	
 				const schema = openAPIResponse.content[mediaType].schema;
 				const schemaReference = schema["$ref"];
-				const modelName: string = schemaReference.startsWith("#/components/schemas/") ? schemaReference.substr(21) : schemaReference;
-				if (modelName) {
-					response.modelName = modelName;
+				if (!!schemaReference)
+				{
+					const modelName: string = schemaReference.startsWith("#/components/schemas/") ? schemaReference.substr(21) : schemaReference;
+					if (modelName) {
+						response.modelName = modelName;
+					}
 				}
 	
 				const example = openAPIResponse.content[mediaType].example;

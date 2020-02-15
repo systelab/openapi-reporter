@@ -52,7 +52,7 @@
                     <li>
                         <i>{{endpoint.requestBody.mediaType}}</i>
                         <span *ngIf="!!endpoint.requestBody.description">&nbsp;&ndash;&nbsp;{{endpoint.requestBody.description}}</span>
-                        <ul>
+                        <ul *ngIf="!!endpoint.requestBody.modelName">
                             <li>Format: <i>{{endpoint.requestBody.modelName}}</i></li>
                         </ul>
                     </li>

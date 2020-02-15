@@ -16,7 +16,7 @@ export class SpecEndpointRequestBody {
 	description?: string;
 	mediaType: string;
 	modelId?: number;
-	modelName: string;
+	modelName?: string;
 	example?: string;
 }
 

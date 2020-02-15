@@ -46,7 +46,8 @@ export enum OpenAPIParameterType {
 export interface OpenAPIRequestBody {
 	description: string;
 	required?: boolean;
-	content: { [mediaType: string]: OpenAPIContent };
+	schema?: any;
+	content?: { [mediaType: string]: OpenAPIContent };
 }
 
 export interface OpenAPIResponse {
