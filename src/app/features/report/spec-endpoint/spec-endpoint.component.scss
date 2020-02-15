@@ -145,3 +145,39 @@ div.cell {
 div.header-cell.center, div.cell.center {
     text-align: center;
 }
+
+div.endpoint-wrapper.get div.header-cell {
+    background-color: #61affe;
+    color: white;
+}
+
+div.endpoint-wrapper.get div.cell {
+    background-color: rgb(204, 230, 255);
+}
+
+div.endpoint-wrapper.post div.header-cell {
+    background-color: #49cc90;
+    color: white;
+}
+
+div.endpoint-wrapper.post div.cell {
+    background-color: rgb(207, 241, 226);
+}
+
+div.endpoint-wrapper.patch div.header-cell, div.endpoint-wrapper.put div.header-cell {
+    background-color: #fca130;
+    color: white;
+}
+
+div.endpoint-wrapper.patch div.cell, div.endpoint-wrapper.put div.cell {
+    background-color: rgb(254, 222, 184);
+}
+
+div.endpoint-wrapper.delete div.header-cell {
+    background-color: #f93e3e;
+    color: white;
+}
+
+div.endpoint-wrapper.delete div.cell {
+    background-color: rgb(253, 187, 187);
+}
