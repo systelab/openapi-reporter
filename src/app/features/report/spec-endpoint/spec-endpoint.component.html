@@ -69,8 +69,16 @@
                         <span *ngIf="response.description">&ndash;&nbsp;{{response.description}}</span>
                         <ul>
                             <li *ngIf="response.mediaType">
-                                <i>{{response.mediaType}}</i><span *ngIf="response.modelName">&nbsp;&ndash;&nbsp;<a [routerLink]="['/']" fragment="patata">{{response.modelName}}</a></span>
+                                <i>{{response.mediaType}}</i><span *ngIf="response.modelName">&nbsp;&ndash;&nbsp;<a [routerLink]="['/']" fragment="model-{{response.modelName}}">{{response.modelName}}</a></span>
                             </li>
+                            <ng-container *ngIf="response.headers">
+                                <li *ngIf="response.headers">
+                                    <i>Headers:</i>
+                                    <ul>
+                                        <li *ngFor="let header of response.headers"><i>{{header.name}}</i><span *ngIf="!!header.type">&nbsp;&ndash;&nbsp;{{header.type}}</span>&nbsp;&ndash;&nbsp;{{header.description}}</li>
+                                    </ul>
+                                </li>
+                            </ng-container>
                         </ul>
                         <br>
                     </li>
