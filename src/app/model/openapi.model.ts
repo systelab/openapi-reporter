@@ -50,7 +50,7 @@ export interface OpenAPIRequestBody {
 }
 
 export interface OpenAPIResponse {
-	description: string;
+	description?: string;
 	headers?: { [headerName: string]: OpenAPIHeader };
 	content?: { [mediaType: string]: OpenAPIContent };
 }
