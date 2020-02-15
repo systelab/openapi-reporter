@@ -1,7 +1,7 @@
 <div class="mt-4">
 	<h1>{{report.title}} <span style="font-size: 14px;">{{report.version}}</span></h1>
 	<hr>
-	<div class="ml-3">
+	<div class="ml-3 mb-5">
 		<app-spec-summary
 			*ngIf="showSummary && !!report.summary"
 			[summary]="report.summary">
@@ -13,10 +13,10 @@
 				<app-spec-endpoint [endpoint]="endpoint"></app-spec-endpoint>
 			</div>
 		
-			<h3 class="mt-4">Models</h3>
-			<div class="ml-4 mb-5" *ngFor="let model of report.models">
+			<h3 class="mt-5">Models</h3>
+			<div class="ml-4" *ngFor="let model of report.models">
 				<app-spec-model [model]="model"></app-spec-model>
-			</div>	
+			</div>
 		</ng-container>
 	</div>
 </div>
