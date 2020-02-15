@@ -22,7 +22,7 @@ export class SpecEndpointRequestBody {
 
 export class SpecEndpointResponse {
 	statusCode: number;
-	description: string;
+	description?: string;
 	mediaType?: string;
 	modelId?: string;
 	modelName?: string;
