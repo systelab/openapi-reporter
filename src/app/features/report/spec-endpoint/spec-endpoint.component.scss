@@ -1,6 +1,46 @@
+div.endpoint-wrapper {
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    box-shadow: 0 0 3px rgba(0,0,0,.19);
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+div.endpoint-wrapper.get {
+    background-color: #61affe;
+    border-color: #61affe;
+    background: rgba(97,175,254,.1);
+}
+
+div.endpoint-wrapper.post {
+    background-color: #49cc90;
+    border-color: #49cc90;
+    background: rgba(73,204,144,.1);
+}
+
+div.endpoint-wrapper.put {
+    background-color: #fca130;
+    border-color: #fca130;
+    background: rgba(252,161,48,.1);
+}
+
+div.endpoint-wrapper.patch {
+    background-color: #fca130;
+    border-color: #fca130;
+    background: rgba(252,161,48,.1);
+}
+
+div.endpoint-wrapper.delete {
+    background-color: #f93e3e;
+    border-color: #f93e3e;
+    background: rgba(249,62,62,.1);
+}
+
 div.endpoint-head {
     display: flex;
-    padding: 6px 16px;
+    padding-top: 6px;
+    padding-bottom: 6px;
     align-items: center;
     cursor: pointer;
 }
@@ -46,6 +86,32 @@ div.endpoint-head .path {
     align-items: center;
     overflow-wrap: break-word;
     word-break: break-all;
+    padding-left: 10px;
+}
+
+div.endpoint-body {
+    border-top-width: 1px;
+    border-top-style: solid;
+}
+
+.get div.endpoint-body {
+    border-top-color: #61affe;
+}
+
+.post div.endpoint-body {
+    border-top-color: #49cc90;
+}
+
+.put div.endpoint-body {
+    border-top-color: #fca130;
+}
+
+.patch div.endpoint-body {
+    border-top-color: #fca130;
+}
+
+.delete div.endpoint-body {
+    border-top-color: #f93e3e;
 }
 
 div.endpoint-body .summary {
@@ -61,4 +127,21 @@ div.endpoint-body .section-title {
 
 div.header-cell {
     font-weight: bold;
+    background-color: lightgrey;
+    margin: 2px;
+    height: 30px;
+    vertical-align: middle;
+    line-height: 30px;
+}
+
+div.cell {
+    background-color: rgb(240,240,240);
+    margin: 2px;
+    height: 30px;
+    vertical-align: middle;
+    line-height: 30px;
+}
+
+div.header-cell.center, div.cell.center {
+    text-align: center;
 }
