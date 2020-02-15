@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AgGridModule } from 'ag-grid-angular';
 import { FileDropModule } from 'ngx-file-drop';
@@ -48,7 +49,10 @@ import { GridContextMenuCellRendererComponent } from 'systelab-components/widget
 			GridHeaderContextMenuComponent
 		]),
 		ToastrModule.forRoot(),
-		MarkdownModule.forRoot()
+		MarkdownModule.forRoot(),
+		RouterModule.forRoot([],{
+			anchorScrolling: 'enabled'
+		})
 	],
 	declarations: [
 		AppComponent,
