@@ -9,7 +9,14 @@ import { SpecEndpointData } from '../../../model/spec-endpoint-data.model';
 })
 export class SpecEndpointComponent {
 
+	public bodyVisibile: boolean = false;
+
 	@Input() public endpoint: SpecEndpointData = null;
 
 	public constructor() {}
+
+	public toogleBodyVisibility()
+	{
+		this.bodyVisibile = !this.bodyVisibile;
+	}
 }
