@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 
 import { SpecReportData } from '@model';
-import { OpenAPIDocument, OpenAPIPath, OpenAPIEndpoint } from '@model';
+import { OpenAPIDocument, OpenAPIPath, OpenAPIEndpoint, OpenAPISchema } from '@model';
 import { SpecEndpointComponent } from '@features/report/spec-endpoint/spec-endpoint.component';
 import { EndpointService } from './endpoint.service';
+import { ModelService } from './model.service';
 
 
 @Injectable({
@@ -11,7 +12,8 @@ import { EndpointService } from './endpoint.service';
 })
 export class ReportService {
 
-	constructor(private endpointService: EndpointService) {
+	constructor(private endpointService: EndpointService,
+				private modelService: ModelService) {
 	}
 
 	public parseFromOpenAPI(openAPIReport: OpenAPIDocument): SpecReportData {
@@ -36,6 +38,14 @@ export class ReportService {
 				const openAPIEndpoint: OpenAPIEndpoint = openAPIPath[method];
 				const specEndpoint = this.endpointService.parseFromOpenAPI(url, method, openAPIEndpoint);
 				specReport.endpoints.push(specEndpoint);
+			}
+		}
+
+		if (!!openAPIReport.components) {
+			for (const modelName in openAPIReport.components.schemas) {
+				const openAPISchema: OpenAPISchema = openAPIReport.components.schemas[modelName];
+				const specModel = this.modelService.parseFromOpenAPI(modelName, openAPISchema);
+				specReport.models.push(specModel);
 			}
 		}
 

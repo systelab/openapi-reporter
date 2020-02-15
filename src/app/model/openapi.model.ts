@@ -68,7 +68,7 @@ export interface OpenAPIContent {
 
 export interface OpenAPIComponents {
 	securitySchemes: { [key: string]: OpenAPISecuritySchema };
-	schemas: { [key: string]: any };
+	schemas: { [key: string]: OpenAPISchema };
 }
 
 export interface OpenAPISecuritySchema {
@@ -77,8 +77,16 @@ export interface OpenAPISecuritySchema {
 	bearerFormat?: string;
 }
 
-// TBD
 export interface OpenAPISchema {
-
+	type: string;
+	description?: string;
+	properties?: { [propertyName: string]: OpenAPISchemaProperty };
+	required?: string[];
 }
 
+export interface OpenAPISchemaProperty {
+	type?: string;
+	items?: any;
+	description?: string;
+	ref?: any
+}
