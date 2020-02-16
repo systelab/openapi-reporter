@@ -10,12 +10,16 @@
 		<div class="container query-string-table mt-3 ml-4">
 			<div class="row">
 				<div class="col-2 header-cell">Name</div>
-				<div class="col-1 header-cell center">Type</div>
+				<div class="col-2 header-cell center">Type</div>
 				<div class="col-6 header-cell">Description</div>
 			</div>
 			<div class="row" *ngFor="let modelProperty of model.properties">
 				<div class="col-2 cell">{{modelProperty.name}}</div>
-				<div class="col-1 cell center">{{modelProperty.typeName}}</div>
+				<div class="col-2 cell center">
+					<span *ngIf="modelProperty.typeBasic">{{modelProperty.typeName}}</span>
+					<a *ngIf="!modelProperty.typeBasic" [routerLink]="['/']" fragment="model-{{modelProperty.typeName}}">{{modelProperty.typeName}}</a>
+					<span *ngIf="modelProperty.typeArray">[]</span>
+				</div>
 				<div class="col-6 cell">{{modelProperty.description}}</div>
 			</div>
 		</div>
