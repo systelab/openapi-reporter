@@ -33,3 +33,24 @@ div.model-body {
     border-top-style: solid;
     border-top-color: rgb(127,127,127);
 }
+
+div.header-cell {
+    font-weight: bold;
+    background-color: lightgrey;
+    margin: 2px;
+    height: 30px;
+    vertical-align: middle;
+    line-height: 30px;
+}
+
+div.cell {
+    background-color: rgb(240,240,240);
+    margin: 2px;
+    // height: 30px;
+    vertical-align: middle;
+    line-height: 30px;
+}
+
+div.header-cell.center, div.cell.center {
+    text-align: center;
+}
