@@ -43,18 +43,21 @@ export class ModelService {
 		let typeBasic = true;
 		let typeArray = false;
 		if (!!openAPIProperty.type) {
-			if (typeName === "object") {
+			if (openAPIProperty.type === "object") {
 				typeBasic = false;
 				typeName = "Object";
 			}
-			else if (typeName === "array") {
-				typeBasic = false;
+			else if (openAPIProperty.type === "array") {
 				typeName = "Array";
 				typeArray = true;
 				if (!!openAPIProperty.items) {
 					const schemaReference = openAPIProperty.items["$ref"];
 					if (!!schemaReference) {
+						typeBasic = false;
 						typeName = schemaReference.startsWith("#/components/schemas/") ? schemaReference.substr(21) : schemaReference;
+					}
+					else if (!!openAPIProperty.items.type) {
+						typeName = openAPIProperty.items.type;
 					}
 				}
 			}
