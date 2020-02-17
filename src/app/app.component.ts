@@ -4,13 +4,11 @@ import { FileSystemFileEntry, UploadEvent, UploadFile } from 'ngx-file-drop';
 import { ToastrService } from 'ngx-toastr';
 import { DialogService } from 'systelab-components/widgets/modal';
 
-import { SpecReportData } from './model/spec-report-data.model';
-import { OpenAPIDocument } from './model/openapi.model';
+import { SpecReportData, OpenAPIDocument } from '@model';
 import { ReporterDialogComponent, ReporterDialogParameters } from './features/reporter/reporter-dialog.component';
+import { ReporterConfirmationDialogComponent } from './features/reporter/reporter-confirmation-dialog.component';
 import { LoginDialog, LoginDialogParameters } from './features/login/login-dialog.component';
 import { ReportService } from './services/report.service';
-import { SpecModelData } from './model/spec-model-data.model';
-import { SpecEndpointData } from './model/spec-endpoint-data.model';
 
 
 @Component({
@@ -146,7 +144,14 @@ export class AppComponent {
 		this.dialogService.showDialog(ReporterDialogComponent, parameters)
 			.subscribe(
 				(result) => {
-
-				});
+					if (!!result) {
+						this.dialogService.showDialog(ReporterConfirmationDialogComponent, result)
+						.subscribe(
+							() => {
+							}
+						);
+					}
+				}
+			);
 	}
 }

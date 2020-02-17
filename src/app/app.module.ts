@@ -26,6 +26,7 @@ import { SpecEndpointComponent } from './features/report/spec-endpoint/spec-endp
 import { SpecModelComponent } from './features/report/spec-model/spec-model.component';
 
 import { ReporterDialogComponent } from './features/reporter/reporter-dialog.component';
+import { ReporterConfirmationDialogComponent } from './features/reporter/reporter-confirmation-dialog.component';
 import { ProjectComboBox } from './components/project-combobox.component';
 import { ItemTypeComboBox } from './components/item-type-combobox.component';
 import { SpecSetComboBox } from './components/spec-set-combobox.component';
@@ -68,6 +69,7 @@ import { GridContextMenuCellRendererComponent } from 'systelab-components/widget
 		SpecEndpointComponent,
 		SpecModelComponent,
 		ReporterDialogComponent,
+		ReporterConfirmationDialogComponent,
 		ProjectComboBox,
 		ItemTypeComboBox,
 		SpecSetComboBox
@@ -78,7 +80,8 @@ import { GridContextMenuCellRendererComponent } from 'systelab-components/widget
 	],
 	entryComponents: [
 		LoginDialog,
-		ReporterDialogComponent
+		ReporterDialogComponent,
+		ReporterConfirmationDialogComponent
 	],
 	bootstrap: [AppComponent]
 })

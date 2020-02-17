@@ -1,15 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-
 import { DialogRef, ModalComponent, SystelabModalContext } from 'systelab-components/widgets/modal';
-import { ProjectsService, UsersService, ItemsService, AbstractitemsService } from '../../jama';
+
+import { ReporterConfirmationDialogComponent, ReporterConfirmationDialogParameters } from './reporter-confirmation-dialog.component';
+import { ProjectsService, UsersService, ItemsService, AbstractitemsService } from '@jama';
 import { ProjectComboBox, ItemTypeComboBox, SpecSetComboBox } from '@components';
 import { SpecReportData } from '@model';
 
 
 export class ReporterDialogParameters extends SystelabModalContext {
 	public width = 900;
-	public height = 600;
+	public height = 250;
 	public username: string;
 	public password: string;
 	public server;
@@ -127,8 +128,21 @@ export class ReporterDialogComponent implements ModalComponent<ReporterDialogPar
 		this.dialog.close(false);
 	}
 
-	public doRun() {
-		// TODO
+	public doNext() {
+
+		if (document.body.classList.contains('modal-open')) {
+			document.body.classList.remove('modal-open');
+		}
+
+		const confirmationParameters: ReporterConfirmationDialogParameters = ReporterConfirmationDialogComponent.getParameters();
+		confirmationParameters.username = this.parameters.username;
+		confirmationParameters.password = this.parameters.password;
+		confirmationParameters.server = this.parameters.server;
+		confirmationParameters.report = this.parameters.report;
+		confirmationParameters.projectId = this.selectedProjectId;
+		confirmationParameters.itemTypeId = this.selectedItemTypeId;
+		confirmationParameters.specSetId = this.selectedSpecSetId;
+		this.dialog.close(confirmationParameters);
 	}
 
 }
