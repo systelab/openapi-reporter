@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { DialogRef, ModalComponent, SystelabModalContext } from 'systelab-components/widgets/modal';
 
-import { SpecReportData } from '@model';
+import { SpecReportData, JamaRESTAPISpec, ProgressData } from '@model';
 import { ItemsService } from '@jama/api/items.service';
+import { JAMAScannerService } from 'app/services/jama-scanner.service';
 
 
 export class ReporterConfirmationDialogParameters extends SystelabModalContext {
@@ -25,6 +26,8 @@ export class ReporterConfirmationDialogParameters extends SystelabModalContext {
 export class ReporterConfirmationDialogComponent implements ModalComponent<ReporterConfirmationDialogParameters>, OnInit {
 
 	public parameters: ReporterConfirmationDialogParameters;
+	public progress: ProgressData = { running: false };
+	public jamaRESTAPISpec: JamaRESTAPISpec;
 
 	public static getParameters(): ReporterConfirmationDialogParameters {
 		return new ReporterConfirmationDialogParameters();
@@ -32,6 +35,7 @@ export class ReporterConfirmationDialogComponent implements ModalComponent<Repor
 
 	constructor(public dialog: DialogRef<ReporterConfirmationDialogParameters>,
 				private itemsService: ItemsService,
+				private jamaScannerService: JAMAScannerService,
 				private toastr: ToastrService) {
 		this.parameters = dialog.context;
 	}
@@ -41,6 +45,8 @@ export class ReporterConfirmationDialogComponent implements ModalComponent<Repor
 		this.itemsService.configuration.username = this.parameters.username;
 		this.itemsService.configuration.password = this.parameters.password;
 		this.itemsService.configuration.basePath = this.parameters.server;
+
+		this.scanJAMASpecificationSet();
 	}
 
 	public isUploadEnabled() {
@@ -58,4 +64,10 @@ export class ReporterConfirmationDialogComponent implements ModalComponent<Repor
 		// TODO
 	}
 
+	private async scanJAMASpecificationSet() {
+
+		this.progress = { running: true, current: 0, total: 100 };
+		this.jamaRESTAPISpec = await this.jamaScannerService.scanProject(this.parameters.specSetId, this.parameters.report);
+		this.progress = { running: false };
+	}
 }
