@@ -8,7 +8,7 @@ import { JamaRESTAPISpec, SpecReportData } from '@model';
 })
 export class JAMAScannerService {
 
-	public scanProject(specSetId: number, specReport: SpecReportData): JamaRESTAPISpec {
+	public async scanProject(specSetId: number, specReport: SpecReportData): Promise<JamaRESTAPISpec> {
 
 		// TODO
 		return null;
