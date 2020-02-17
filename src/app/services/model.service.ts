@@ -23,8 +23,7 @@ export class ModelService {
 
 		if (!!openAPIModel.properties) {
 			const propertyNames: string[] = Object.keys(openAPIModel.properties);
-			for (const propertyName of propertyNames)
-			{
+			for (const propertyName of propertyNames) {
 				const openAPIProperty: OpenAPISchemaProperty = openAPIModel.properties[propertyName];
 				this.addPropertyFromOpenAPI(model, propertyName, openAPIProperty);
 			}
@@ -35,37 +34,64 @@ export class ModelService {
 
 	private addPropertyFromOpenAPI(model: SpecModelData, propertyName: string, openAPIProperty: OpenAPISchemaProperty) {
 
-		let description: string = "";
+		let description = '';
 		if (!!openAPIProperty.description) {
 			description = openAPIProperty.description;
+
+			if (!!openAPIProperty.enum) {
+				description += '&nbsp;' + 'Possible values shall be: ';
+
+				let possibleValueIndex = 0;
+				const nPossibleValues: number = openAPIProperty.enum.length;
+				for (const possibleValue of openAPIProperty.enum) {
+
+					let separator;
+					if (possibleValueIndex === 0) {
+						separator = '';
+					} else if (possibleValueIndex === (nPossibleValues - 1)) {
+						separator = ' and ';
+					} else {
+						separator = ', ';
+					}
+
+					description += separator + '\'' + possibleValue + '\'';
+					possibleValueIndex++;
+				}
+
+				description += '.';
+			}
 		}
 
-		let typeName = "";
+		let typeName = '';
 		let typeBasic = true;
 		let typeArray = false;
 		if (!!openAPIProperty.type) {
-			if (openAPIProperty.type === "object") {
+			if (openAPIProperty.type === 'object') {
 				typeBasic = false;
-				typeName = "Object";
-			}
-			else if (openAPIProperty.type === "array") {
-				typeName = "Array";
+				typeName = 'Object';
+			} else if (openAPIProperty.type === 'array') {
+				typeName = 'Array';
 				typeArray = true;
 				if (!!openAPIProperty.items) {
-					const schemaReference = openAPIProperty.items["$ref"];
+					const schemaReference = openAPIProperty.items['$ref'];
 					if (!!schemaReference) {
 						typeBasic = false;
-						typeName = schemaReference.startsWith("#/components/schemas/") ? schemaReference.substr(21) : schemaReference;
-					}
-					else if (!!openAPIProperty.items.type) {
+						typeName = schemaReference.startsWith('#/components/schemas/') ? schemaReference.substr(21) : schemaReference;
+					} else if (!!openAPIProperty.items.type) {
 						typeName = openAPIProperty.items.type;
 					}
 				}
-			}
-			else {
+			} else {
 				typeName = openAPIProperty.type;
 			}
+		} else {
+			const schemaReference = openAPIProperty['$ref'];
+			if (!!schemaReference) {
+				typeBasic = false;
+				typeName = schemaReference.startsWith('#/components/schemas/') ? schemaReference.substr(21) : schemaReference;
+			}
 		}
+
 
 		const modelProperty: SpecModelProperty = {
 			name: propertyName,
