@@ -87,7 +87,8 @@ export interface OpenAPISchema {
 
 export interface OpenAPISchemaProperty {
 	type?: string;
+	enum: any[];
 	items?: any;
 	description?: string;
-	ref?: any
+	ref?: any;
 }
