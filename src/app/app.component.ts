@@ -126,7 +126,7 @@ export class AppComponent {
 		parameters.server = this.server;
 		parameters.report = this.report;
 
-		if (!!this.report) {
+		if (!this.report) {
 			this.toastr.error('No specification provided.');
 			return;
 		}
