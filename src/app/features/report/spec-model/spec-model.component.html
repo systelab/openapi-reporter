@@ -20,7 +20,7 @@
 					<a *ngIf="!modelProperty.typeBasic" [routerLink]="['/']" fragment="model-{{modelProperty.typeName}}">{{modelProperty.typeName}}</a>
 					<span *ngIf="modelProperty.typeArray">[]</span>
 				</div>
-				<div class="col-6 cell">{{modelProperty.description}}</div>
+				<div class="col-6 cell" [innerHTML]="modelProperty.description"></div>
 			</div>
 		</div>
 	</div>
