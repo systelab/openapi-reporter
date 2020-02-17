@@ -8,6 +8,7 @@
       "@common/*": ["app/common/*"],
       "@components": ["app/components/index.ts"],
       "@features/*": ["app/features/*"],
+      "@jama": ["app/jama/index.ts"],
       "@jama/*": ["app/jama/*"],
       "@model": ["app/model/index.ts"],
       "@services/*": ["app/service/index.ts"]
