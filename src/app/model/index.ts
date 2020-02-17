@@ -1,5 +1,7 @@
 export * from "./openapi.model";
 export * from "./project-data.model";
+export * from "./item-type-data.model";
+export * from "./spec-set-data.model";
 
 // SPECS MODEL
 export * from "./spec-endpoint-data.model";
