@@ -57,7 +57,6 @@ export class ItemTypeComboBox extends AbstractApiComboBox<ItemTypeData> {
 					typeData.id = t.id;
 					typeData.typeKey = t.typeKey;
 					typeData.name = t.display;
-					console.log(typeData, t.category);
 					return typeData;
 				})
 			}));
