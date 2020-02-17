@@ -87,8 +87,10 @@ export class AppComponent {
 
 			const newReport: SpecReportData = JSON.parse(JSON.stringify(this.report));
 
-			for (const endpoint of newReport.endpoints) {
-				endpoint.collapsed = collapsed;
+			for (const endpointGroup of newReport.endpointGroups) {
+				for (const endpoint of endpointGroup.endpoints) {
+					endpoint.collapsed = collapsed;
+				}
 			}
 
 			for (const model of newReport.models) {
