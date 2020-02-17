@@ -27,10 +27,13 @@ import { SpecModelComponent } from './features/report/spec-model/spec-model.comp
 
 import { ReporterDialogComponent } from './features/reporter/reporter-dialog.component';
 import { ProjectComboBox } from './components/project-combobox.component';
+import { ItemTypeComboBox } from './components/item-type-combobox.component';
+import { SpecSetComboBox } from './components/spec-set-combobox.component';
 
 import { GridHeaderContextMenuComponent } from 'systelab-components/widgets/grid/contextmenu/grid-header-context-menu.component';
 import { DialogService, MessagePopupService } from 'systelab-components/widgets/modal';
 import { GridContextMenuCellRendererComponent } from 'systelab-components/widgets/grid/contextmenu/grid-context-menu-cell-renderer.component';
+
 
 
 @NgModule({
@@ -65,7 +68,9 @@ import { GridContextMenuCellRendererComponent } from 'systelab-components/widget
 		SpecEndpointComponent,
 		SpecModelComponent,
 		ReporterDialogComponent,
-		ProjectComboBox
+		ProjectComboBox,
+		ItemTypeComboBox,
+		SpecSetComboBox
 	],
 	providers: [
 		MessagePopupService,
