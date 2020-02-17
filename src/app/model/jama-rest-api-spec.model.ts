@@ -1,14 +1,13 @@
 export interface JamaRESTAPISpec {
-	setItemId: number;
-
-	endpointTagsFolderId: number;
-	endpointTags: JamaRESTAPIEndpointTag[];
+	setId: number;
+	endpointsFolderId: number;
+	endpointGroups: JamaRESTAPIEndpointGroup[];
 
 	dataTypesFolderId: number;
 	dataTypes: JamaRESTAPIDataType[];
 }
 
-export interface JamaRESTAPIEndpointTag {
+export interface JamaRESTAPIEndpointGroup {
 	action: JamaRESTAPIAction;
 	folderId: number;
 	name: string;
