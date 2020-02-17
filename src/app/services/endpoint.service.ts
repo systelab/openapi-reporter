@@ -12,9 +12,15 @@ export class EndpointService {
 
 	public parseFromOpenAPI(url: string, method: string, openAPIEndpoint: OpenAPIEndpoint): SpecEndpointData
 	{
+		let groupName = 'General';
+		if (!!openAPIEndpoint.tags && (openAPIEndpoint.tags.length > 0)) {
+			groupName = openAPIEndpoint.tags[0];
+		}
+
 		const endpoint: SpecEndpointData = {
 			method: method.toUpperCase(),
 			url: url,
+			groupName: groupName,
 			summary: openAPIEndpoint.summary,
 			pathParameters: [],
 			queryStrings: [],
