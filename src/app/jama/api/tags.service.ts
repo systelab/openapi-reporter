@@ -31,7 +31,7 @@ import { Configuration } from '../configuration';
 @Injectable()
 export class TagsService {
 
-	protected basePath = 'https://jama.systelab.net/contour/rest/latest';
+	protected basePath = 'https://snowjamaserver.systelab.net/rest/latest';
 	public defaultHeaders = new HttpHeaders();
 	public configuration = new Configuration();
 

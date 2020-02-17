@@ -32,7 +32,7 @@ import { Configuration } from '../configuration';
 @Injectable()
 export class UsersService {
 
-	protected basePath = 'https://snowjama.systelab.net/rest/latest';
+	protected basePath = 'https://snowjamaserver.systelab.net/rest/latest';
 	public defaultHeaders = new HttpHeaders();
 	public configuration = new Configuration();
 
