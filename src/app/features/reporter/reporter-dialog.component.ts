@@ -1,13 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Observable, range, throwError } from 'rxjs';
-import { concatMap, map,  takeWhile } from 'rxjs/operators';
-import { format } from 'date-fns';
 import { ToastrService } from 'ngx-toastr';
 
 import { DialogRef, ModalComponent, SystelabModalContext } from 'systelab-components/widgets/modal';
-import { ProjectsService, UsersService, ItemsService, TestRunDataListWrapper } from '../../jama';
-import { ProjectComboBox } from '../../components/project-combobox.component';
-import { SpecReportData } from '../../model/spec-report-data.model';
+import { ProjectsService, UsersService, ItemsService, AbstractitemsService } from '../../jama';
+import { ProjectComboBox, ItemTypeComboBox, SpecSetComboBox } from '@components';
+import { SpecReportData } from '@model';
 
 
 export class ReporterDialogParameters extends SystelabModalContext {
@@ -26,6 +23,8 @@ export class ReporterDialogParameters extends SystelabModalContext {
 export class ReporterDialogComponent implements ModalComponent<ReporterDialogParameters>, OnInit {
 
 	@ViewChild('projectComboBox') public projectComboBox: ProjectComboBox;
+	@ViewChild('itemTypeComboBox') public itemTypeComboBox: ItemTypeComboBox;
+	@ViewChild('specSetComboBox') public specSetComboBox: SpecSetComboBox;
 
 	public parameters: ReporterDialogParameters;
 
@@ -40,8 +39,6 @@ export class ReporterDialogComponent implements ModalComponent<ReporterDialogPar
 	private _selectedSpecSetId: number;
 	public selectedSpecSetName: string;
 
-	public commitMessage = '';
-
 	public static getParameters(): ReporterDialogParameters {
 		return new ReporterDialogParameters();
 	}
@@ -49,8 +46,9 @@ export class ReporterDialogComponent implements ModalComponent<ReporterDialogPar
 	constructor(public dialog: DialogRef<ReporterDialogParameters>,
 				private usersService: UsersService,
 				private projectsService: ProjectsService,
-				private toastr: ToastrService,
-				private itemsService: ItemsService) {
+				private abstractItemsService: AbstractitemsService,
+				private itemsService: ItemsService,
+				private toastr: ToastrService) {
 		this.parameters = dialog.context;
 	}
 
@@ -62,6 +60,10 @@ export class ReporterDialogComponent implements ModalComponent<ReporterDialogPar
 		this.projectsService.configuration.username = this.parameters.username;
 		this.projectsService.configuration.password = this.parameters.password;
 		this.projectsService.configuration.basePath = this.parameters.server;
+
+		this.abstractItemsService.configuration.username = this.parameters.username;
+		this.abstractItemsService.configuration.password = this.parameters.password;
+		this.abstractItemsService.configuration.basePath = this.parameters.server;
 
 		this.itemsService.configuration.username = this.parameters.username;
 		this.itemsService.configuration.password = this.parameters.password;
@@ -79,7 +81,7 @@ export class ReporterDialogComponent implements ModalComponent<ReporterDialogPar
 
 	public isValidForm() {
 		if (this._userId) {
-			return this.selectedProjectId && this.selectedItemTypeId && this.selectedSpecSetId && this.commitMessage !== '';
+			return this.selectedProjectId && this.selectedItemTypeId && this.selectedSpecSetId;
 		} else {
 			return false;
 		}
@@ -93,7 +95,9 @@ export class ReporterDialogComponent implements ModalComponent<ReporterDialogPar
 		this._selectedProjectId = value;
 		this.selectedItemTypeId = undefined;
 		this.selectedItemTypeName = undefined;
-		// this.itemTypeComboBox.project = value;
+		this.selectedSpecSetId = undefined;
+		this.selectedSpecSetName = undefined;
+		this.itemTypeComboBox.project = value;
 	}
 
 	public get selectedItemTypeId(): number {
@@ -103,7 +107,9 @@ export class ReporterDialogComponent implements ModalComponent<ReporterDialogPar
 	public set selectedItemTypeId(value: number) {
 		this._selectedItemTypeId = value;
 		this.selectedSpecSetId = undefined;
-		// this.specSetComboBox.itemType = value;
+		this.selectedSpecSetName = undefined;
+		this.specSetComboBox.project = this.selectedProjectId;
+		this.specSetComboBox.itemType = value;
 	}
 
 	public get selectedSpecSetId(): number {

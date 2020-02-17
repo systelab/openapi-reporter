@@ -15,13 +15,23 @@
 
 		<div class="row mt-2">
 			<div class="col-md-3">
+				<label class="col-form-label">Item Type</label>
+			</div>
+			<div class="col-md-9">
+				<item-type-combobox #itemTypeComboBox [(id)]="selectedItemTypeId"
+													[(description)]="selectedItemTypeName"
+													[emptyElement]="false"></item-type-combobox>
+			</div>
+		</div>
+
+		<div class="row mt-2">
+			<div class="col-md-3">
 				<label class="col-form-label">Specifications Set</label>
 			</div>
 			<div class="col-md-9">
-				<!-- <test-plan-combobox #testPlanComboBox [(id)]="selectedTestPlanId"
-													[(description)]="selectedTestPlanName"
-													[emptyElement]="false"></test-plan-combobox>
- -->
+				<spec-set-combobox #specSetComboBox [(id)]="selectedSpecSetId"
+													[(description)]="selectedSpecSetName"
+													[emptyElement]="false"></spec-set-combobox>
 			</div>
 		</div>
 	</form>
