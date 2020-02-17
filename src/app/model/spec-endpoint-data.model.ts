@@ -40,6 +40,7 @@ export class SpecEndpointData {
 	id?: number;
 	method: string;
 	url: string;
+	groupName: string;
 	summary: string;
 	description?: string;
 	pathParameters: SpecEndpointPathParameter[];

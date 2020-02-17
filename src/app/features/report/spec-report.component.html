@@ -3,20 +3,21 @@
 	<hr>
 	<div class="ml-3 mb-5">
 		<app-spec-summary
-			*ngIf="showSummary && !!report.summary"
+			*ngIf="!!report.summary"
 			[summary]="report.summary">
 		</app-spec-summary>
 
-		<ng-container *ngIf="showSpecifications">
-			<h3 class="mt-4">Endpoints</h3>
-			<div class="ml-4" *ngFor="let endpoint of report.endpoints">
+		<h3 class="mt-4 mb-4">Endpoints</h3>
+		<div class="ml-4" *ngFor="let endpointGroup of report.endpointGroups">
+			<div class="endpoint-group mb-2">{{endpointGroup.name}}</div>
+			<div *ngFor="let endpoint of endpointGroup.endpoints">
 				<app-spec-endpoint [endpoint]="endpoint"></app-spec-endpoint>
 			</div>
-		
-			<h3 class="mt-5">Models</h3>
-			<div class="ml-4" *ngFor="let model of report.models">
-				<app-spec-model [model]="model"></app-spec-model>
-			</div>
-		</ng-container>
+		</div>
+	
+		<h3 class="mt-5">Models</h3>
+		<div class="ml-4" *ngFor="let model of report.models">
+			<app-spec-model [model]="model"></app-spec-model>
+		</div>
 	</div>
 </div>

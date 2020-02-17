@@ -7,6 +7,11 @@ export class SpecReportData {
 	title: string;
 	version: string;
 	summary: SpecSummaryData;
-	endpoints: SpecEndpointData[];
+	endpointGroups: SpecEndpointGroupData[];
 	models: SpecModelData[];
+}
+
+export class SpecEndpointGroupData {
+	name: string;
+	endpoints: SpecEndpointData[];
 }
