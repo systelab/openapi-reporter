@@ -67,7 +67,7 @@ export class ReporterConfirmationDialogComponent implements ModalComponent<Repor
 	private async scanJAMASpecificationSet() {
 
 		this.progress = { running: true, current: 0, total: 100 };
-		this.jamaRESTAPISpec = await this.jamaScannerService.scanProject(this.parameters.specSetId, this.parameters.report);
+		this.jamaRESTAPISpec = await this.jamaScannerService.scanProject(this.parameters.specSetId, this.parameters.report, this.progress);
 		this.progress = { running: false };
 	}
 }
