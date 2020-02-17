@@ -6,23 +6,17 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class NavbarComponent {
 
-	@Input() toggleSpecifications;
-	@Output() toggleSpecificationsChange = new EventEmitter<boolean>();
-
-	@Input() toggleSummary;
-	@Output() toggleSummaryChange = new EventEmitter<boolean>();
-
+	@Output() expand = new EventEmitter();
+	@Output() collapse = new EventEmitter();
 	@Output() user = new EventEmitter();
 	@Output() upload = new EventEmitter();
 
-	public doSpecificationsClick() {
-		this.toggleSpecifications = !this.toggleSpecifications;
-		this.toggleSpecificationsChange.emit(this.toggleSpecifications);
+	public doExpandClick() {
+		this.expand.emit();
 	}
 
-	public doSummaryClick() {
-		this.toggleSummary = !this.toggleSummary;
-		this.toggleSummaryChange.emit(this.toggleSummary);
+	public doCollapseClick() {
+		this.collapse.emit();
 	}
 
 	public doUserClick() {

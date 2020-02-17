@@ -1,13 +1,13 @@
 <div class="endpoint-wrapper mt-4 col-12 {{endpoint.method.toLowerCase()}}">
 
-    <div class="endpoint-head pl-3" (click)="toogleBodyVisibility()">
+    <div class="endpoint-head pl-3" (click)="toogleCollapsed()">
         <div class="method {{endpoint.method.toLowerCase()}}">{{endpoint.method}}</div>
         <div class="path ml-2">{{endpoint.url}}</div>
     </div>
 
-    <div class="endpoint-body pl-3 pt-3" *ngIf="bodyVisibile">
+    <div class="endpoint-body pl-3 pt-3" *ngIf="!endpoint.collapsed">
 
-        <div class="summary mb-3">{{endpoint.summary}}</div>
+        <div class="summary mb-3" *ngIf="endpoint.description" [innerHTML]="endpoint.description"></div>
 
         <div class="section mb-3" *ngIf="endpoint.pathParameters.length > 0">
             <div class="section-title">Path Parameters</div>
@@ -51,7 +51,7 @@
                 <ul>
                     <li>
                         <i>{{endpoint.requestBody.mediaType}}</i>
-                        <span *ngIf="!!endpoint.requestBody.description">&nbsp;&ndash;&nbsp;{{endpoint.requestBody.description}}</span>
+                        <span *ngIf="!!endpoint.requestBody.description">&nbsp;&ndash;&nbsp;<span [innerHTML]="endpoint.requestBody.description"></span></span>
                         <ul *ngIf="!!endpoint.requestBody.modelName">
                             <li>Format: <a [routerLink]="['/']" fragment="model-{{endpoint.requestBody.modelName}}">{{endpoint.requestBody.modelName}}</a></li>
                         </ul>
@@ -66,7 +66,7 @@
                 <ul>
                     <li *ngFor="let response of endpoint.responses">
                         {{response.statusCode}}
-                        <span *ngIf="response.description">&ndash;&nbsp;{{response.description}}</span>
+                        <span *ngIf="response.description">&ndash;&nbsp;<span [innerHTML]="response.description"></span></span>
                         <ul>
                             <li *ngIf="response.mediaType">
                                 <i>{{response.mediaType}}</i><span *ngIf="response.modelName">&nbsp;&ndash;&nbsp;<a [routerLink]="['/']" fragment="model-{{response.modelName}}">{{response.modelName}}</a></span>
@@ -75,7 +75,7 @@
                                 <li *ngIf="response.headers">
                                     <i>Headers:</i>
                                     <ul>
-                                        <li *ngFor="let header of response.headers"><i>{{header.name}}</i><span *ngIf="!!header.type">&nbsp;&ndash;&nbsp;{{header.type}}</span>&nbsp;&ndash;&nbsp;{{header.description}}</li>
+                                        <li *ngFor="let header of response.headers"><i>{{header.name}}</i><span *ngIf="!!header.type">&nbsp;&ndash;&nbsp;{{header.type}}</span>&nbsp;&ndash;&nbsp;<span [innerHTML]="header.description"></span></li>
                                     </ul>
                                 </li>
                             </ng-container>

@@ -1,12 +1,12 @@
 <div class="model-wrapper mt-4 col-12" id="model-{{model.name}}">
 
-	<div class="model-head pl-3" (click)="toogleBodyVisibility()">
+	<div class="model-head pl-3" (click)="toogleCollapsed()">
 		<div class="model-name">{{model.name}}</div>
 	</div>
 
-	<div class="model-body pl-3 pt-3 pb-3" *ngIf="bodyVisibile">
-		<p *ngIf="!!model.description">{{model.description}}</p>
-		<p>It shall have the following properties:</p>
+	<div class="model-body pl-3 pt-3 pb-3" *ngIf="!model.collapsed">
+		<p *ngIf="!!model.description" [innerHTML]="model.description"></p>
+		<p>It shall have the following members:</p>
 		<div class="container query-string-table mt-3 ml-4">
 			<div class="row">
 				<div class="col-2 header-cell">Name</div>

@@ -10,16 +10,22 @@ import { OpenAPIRequestBody, OpenAPIResponse, OpenAPIHeader } from '@model';
 })
 export class EndpointService {
 
-	public parseFromOpenAPI(url: string, method: string, openAPIEndpoint: OpenAPIEndpoint): SpecEndpointData {
-
+	public parseFromOpenAPI(url: string, method: string, openAPIEndpoint: OpenAPIEndpoint): SpecEndpointData
+	{
 		const endpoint: SpecEndpointData = {
 			method: method.toUpperCase(),
 			url: url,
 			summary: openAPIEndpoint.summary,
 			pathParameters: [],
 			queryStrings: [],
-			responses: []
+			responses: [],
+			collapsed: true
 		};
+
+		if (!!openAPIEndpoint.description)
+		{
+			endpoint.description = openAPIEndpoint.description;
+		}
 
 		if (!!openAPIEndpoint.parameters)
 		{

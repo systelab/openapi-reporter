@@ -13,7 +13,8 @@ export class ModelService {
 
 		const model: SpecModelData = {
 			name: modelName,
-			properties: []
+			properties: [],
+			collapsed: true
 		};
 
 		if (!!openAPIModel.description) {

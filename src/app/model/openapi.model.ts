@@ -22,6 +22,7 @@ export interface OpenAPIPath {
 
 export interface OpenAPIEndpoint {
 	summary: string;
+	description?: string;
 	tags: string[];
 	security: any;
 	parameters?: OpenAPIParameter[];

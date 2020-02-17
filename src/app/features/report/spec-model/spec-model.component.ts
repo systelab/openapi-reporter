@@ -10,14 +10,12 @@ import { SpecModelData } from '@model';
 })
 export class SpecModelComponent {
 
-	public bodyVisibile: boolean = false;
-
 	@Input() model: SpecModelData;
 
 	public constructor() {}
 
-	public toogleBodyVisibility()
+	public toogleCollapsed()
 	{
-		this.bodyVisibile = !this.bodyVisibile;
+		this.model.collapsed = !this.model.collapsed;
 	}
 }

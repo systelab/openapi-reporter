@@ -3,6 +3,7 @@ export class SpecModelData {
 	name: string;
 	description?: string;
 	properties: SpecModelProperty[];
+	collapsed: boolean;
 }
 
 export class SpecModelProperty {

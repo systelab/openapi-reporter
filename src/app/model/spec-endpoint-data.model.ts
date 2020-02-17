@@ -41,8 +41,10 @@ export class SpecEndpointData {
 	method: string;
 	url: string;
 	summary: string;
+	description?: string;
 	pathParameters: SpecEndpointPathParameter[];
 	queryStrings: SpecEndpointQueryString[];
 	requestBody?: SpecEndpointRequestBody;
 	responses: SpecEndpointResponse[];
+	collapsed: boolean;
 }

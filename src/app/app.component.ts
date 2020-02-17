@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FileSystemFileEntry, UploadEvent, UploadFile } from 'ngx-file-drop';
 import { ToastrService } from 'ngx-toastr';
@@ -9,6 +9,8 @@ import { OpenAPIDocument } from './model/openapi.model';
 import { ReporterDialogComponent, ReporterDialogParameters } from './features/reporter/reporter-dialog.component';
 import { LoginDialog, LoginDialogParameters } from './features/login/login-dialog.component';
 import { ReportService } from './services/report.service';
+import { SpecModelData } from './model/spec-model-data.model';
+import { SpecEndpointData } from './model/spec-endpoint-data.model';
 
 
 @Component({
@@ -27,26 +29,6 @@ export class AppComponent {
 
 	public report: SpecReportData;
 	public fileDropError: string;
-
-	private _showSummary = true;
-	get showSummary(): boolean {
-		return this._showSummary;
-	}
-
-	set showSummary(show: boolean) {
-		this._showSummary = show;
-		this.update();
-	}
-
-	private _showSpecifications = true;
-	get showSpecifications(): boolean {
-		return this._showSpecifications;
-	}
-
-	set showSpecifications(show: boolean) {
-		this._showSpecifications = show;
-		this.update();
-	}
 
 	constructor(private http: HttpClient,
 				private ref: ChangeDetectorRef,
@@ -99,6 +81,24 @@ export class AppComponent {
 
 	public update() {
 		this.ref.detectChanges();
+	}
+
+	public doUpdateCollapsedItems(collapsed: boolean) {
+
+		if (!!this.report) {
+
+			const newReport: SpecReportData = JSON.parse(JSON.stringify(this.report));
+
+			for (const endpoint of newReport.endpoints) {
+				endpoint.collapsed = collapsed;
+			}
+
+			for (const model of newReport.models) {
+				model.collapsed = collapsed;
+			}
+
+			this.report = newReport;
+		}
 	}
 
 	public doShowUser(show: boolean) {

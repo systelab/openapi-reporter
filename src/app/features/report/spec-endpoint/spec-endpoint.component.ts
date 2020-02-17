@@ -9,14 +9,12 @@ import { SpecEndpointData } from '@model';
 })
 export class SpecEndpointComponent {
 
-	public bodyVisibile: boolean = false;
-
 	@Input() public endpoint: SpecEndpointData = null;
 
 	public constructor() {}
 
-	public toogleBodyVisibility()
+	public toogleCollapsed()
 	{
-		this.bodyVisibile = !this.bodyVisibile;
+		this.endpoint.collapsed = !this.endpoint.collapsed;
 	}
 }

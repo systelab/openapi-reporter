@@ -2,11 +2,11 @@
 	<a class="navbar-brand" href="#">OpenAPI Reporter</a>
 	<div class="ml-auto">
 	</div>
-	<button class="border rounded ml-2" type="button" [class.btn-primary]="toggleSpecifications" [class.btn-danger]="!toggleSpecifications" (click)="doSpecificationsClick()">
-		<i class="fa fa-check text-white mt-1" style="font-size: 23px;"></i>
+	<button class="btn-primary border rounded ml-2 " type="button" (click)="doExpandClick()">
+		<i class="fa fa-expand text-white mt-1" style="font-size: 23px;"></i>
 	</button>
-	<button class="border rounded ml-2" type="button" [class.btn-primary]="toggleSummary" [class.btn-danger]="!toggleSummary" (click)="doSummaryClick()">
-		<i class="fa fa-table text-white mt-1" style="font-size: 23px;"></i>
+	<button class="btn-primary border rounded ml-2" type="button" (click)="doCollapseClick()">
+		<i class="fa fa-compress text-white mt-1" style="font-size: 23px;"></i>
 	</button>
 	<button class="btn-primary border rounded ml-2" type="button" (click)="doUserClick()">
 		<i class="fa fa-user text-white mt-1" style="font-size: 23px;"></i>

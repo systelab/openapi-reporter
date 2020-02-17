@@ -1,8 +1,8 @@
 <div class="d-flex flex-column w-100">
 
 	<app-navbar
-		[(toggleSpecifications)]="showSpecifications"
-		[(toggleSummary)]="showSummary"
+		(expand)="doUpdateCollapsedItems(false)"
+		(collapse)="doUpdateCollapsedItems(true)"
 		(user)="doShowUser(true)"
 		(upload)="doShowUpload(true)">
 	</app-navbar>
@@ -15,6 +15,7 @@
 				<p>Drop your OpenAPI JSON file here</p>
 			</div>
 		</file-drop>
+
 		<div *ngIf="!!fileDropError" class="mt-3 alert alert-danger" role="alert">
 			<strong>ERROR: </strong>{{fileDropError}}
 		</div>
@@ -22,11 +23,7 @@
 		<help *ngIf="!report"></help>
 
 		<ng-container *ngIf="!!report">
-			<app-spec-report
-				[report]="report"
-				[showSummary]="showSummary"
-				[showSpecifications]="showSpecifications">
-			</app-spec-report>
+			<app-spec-report [report]="report"></app-spec-report>
 		</ng-container>
 
 	</div>
