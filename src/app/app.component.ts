@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FileSystemFileEntry, UploadEvent, UploadFile } from 'ngx-file-drop';
 import { ToastrService } from 'ngx-toastr';
-import { DialogService } from 'systelab-components/widgets/modal';
+import { DialogService, MessagePopupService } from 'systelab-components/widgets/modal';
 
 import { SpecReportData, OpenAPIDocument } from '@model';
 import { ReporterDialogComponent, ReporterDialogParameters } from './features/reporter/reporter-dialog.component';
@@ -32,7 +32,8 @@ export class AppComponent {
 				private ref: ChangeDetectorRef,
 				protected dialogService: DialogService,
 				protected reportService: ReportService,
-				private toastr: ToastrService) {
+				private toastr: ToastrService,
+				private messagePopupService: MessagePopupService) {
 	}
 
 	public fileDrop(event: UploadEvent) {
@@ -148,10 +149,14 @@ export class AppComponent {
 				(result) => {
 					if (!!result) {
 						this.dialogService.showDialog(ReporterConfirmationDialogComponent, result)
-						.subscribe(
-							() => {
-							}
-						);
+							.subscribe(
+								(uploadResult) => {
+									if (uploadResult) {
+										this.messagePopupService.showInformationPopup('Successful Upload', 'Specifications have been successfully uploaded to JAMA.',
+																						null, 800, 100).subscribe(() => {});
+									}
+								}
+							);
 					}
 				}
 			);
