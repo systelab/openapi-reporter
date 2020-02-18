@@ -12,6 +12,7 @@ export class SpecReportData {
 }
 
 export class SpecEndpointGroupData {
+	id?: number;
 	name: string;
 	endpoints: SpecEndpointData[];
 }
