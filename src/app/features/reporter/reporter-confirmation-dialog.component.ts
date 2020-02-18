@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
 import { DialogRef, ModalComponent, SystelabModalContext } from 'systelab-components/widgets/modal';
 import { Subscription } from 'rxjs';
 
 import { SpecReportData, JamaRESTAPISpec, ProgressData } from '@model';
-import { ItemsService } from '@jama/api/items.service';
-import { JAMAScannerService } from 'app/services/jama-scanner.service';
-
+import { ItemsService } from '@jama';
+import { JAMAScannerService, JAMAUploaderService } from '@services';
 
 
 export class ReporterConfirmationDialogParameters extends SystelabModalContext {
@@ -39,7 +37,7 @@ export class ReporterConfirmationDialogComponent implements ModalComponent<Repor
 	constructor(public dialog: DialogRef<ReporterConfirmationDialogParameters>,
 				private itemsService: ItemsService,
 				private jamaScannerService: JAMAScannerService,
-				private toastr: ToastrService) {
+				private jamaUploaderService: JAMAUploaderService) {
 		this.parameters = dialog.context;
 	}
 
@@ -63,10 +61,27 @@ export class ReporterConfirmationDialogComponent implements ModalComponent<Repor
 		this.dialog.close(false);
 	}
 
-	public doUpload() {
+	public async doUpload() {
 
-		this.currentOperationMessage = 'Uploading JAMA specification';
+		this.currentOperationMessage = 'Uploading JAMA specifications';
 		this.progress = { running: true, current: 0, total: 100 };
+		const uploadSubscription: Subscription = this.jamaUploaderService.uploadProgress$.subscribe(
+			(uploadProgress) => {
+				if (!!uploadProgress) {
+					this.progress = uploadProgress;
+				}
+			}
+		);
+
+		await this.jamaUploaderService.uploadProject(this.jamaSpec);
+
+		this.progress = { running: false };
+		uploadSubscription.unsubscribe();
+
+		if (document.body.classList.contains('modal-open')) {
+			document.body.classList.remove('modal-open');
+		}
+		this.dialog.close(true);
 	}
 
 	private async scanJAMASpecificationSet() {
