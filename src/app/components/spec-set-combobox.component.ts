@@ -64,6 +64,10 @@ export class SpecSetComboBox extends AbstractApiComboBox<SpecSetData> {
 
 	public getData(page: number, itemsPerPage: number): Observable<Array<SpecSetData>> {
 
+		if (!this.specSets) {
+			return Observable.of([]);
+		}
+
 		const data = Array<SpecSetData>();
 		const startIndex = this.getStartAt(page, itemsPerPage);
 		const endIndex = ((startIndex + itemsPerPage) < this.specSets.length) ? (startIndex + itemsPerPage) : this.specSets.length;
