@@ -13,10 +13,11 @@
     </div>
 
     <div *ngIf="!progress.running" class="ml-5 mr-5 mt-5 mb-5">
-        <div>Scan has been completed!!</div>
+        <div class="mb-2">Detected changes:</div>
+        <spec-changes-tree [jamaSpec]="jamaSpec"></spec-changes-tree>
     </div>
 
 </div>
 <systelab-dialog-bottom>
-	<button type="button" class="btn ml-auto" (click)="doRun()" [disabled]="!isUploadEnabled()">Upload</button>
+	<button *ngIf="!progress.running" type="button" class="btn ml-auto" (click)="doRun()" [disabled]="!isUploadEnabled()">Upload</button>
 </systelab-dialog-bottom>

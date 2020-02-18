@@ -8,6 +8,7 @@ import { ItemsService } from '@jama/api/items.service';
 import { JAMAScannerService } from 'app/services/jama-scanner.service';
 
 
+
 export class ReporterConfirmationDialogParameters extends SystelabModalContext {
 	public width = 900;
 	public height = 600;
@@ -29,7 +30,7 @@ export class ReporterConfirmationDialogComponent implements ModalComponent<Repor
 	public parameters: ReporterConfirmationDialogParameters;
 	public progress: ProgressData = { running: false };
 	public currentOperationMessage = '';
-	public jamaRESTAPISpec: JamaRESTAPISpec;
+	public jamaSpec: JamaRESTAPISpec;
 
 	public static getParameters(): ReporterConfirmationDialogParameters {
 		return new ReporterConfirmationDialogParameters();
@@ -52,7 +53,7 @@ export class ReporterConfirmationDialogComponent implements ModalComponent<Repor
 	}
 
 	public isUploadEnabled() {
-		return !!this.jamaRESTAPISpec;
+		return !!this.jamaSpec;
 	}
 
 	public close(): void {
@@ -83,11 +84,9 @@ export class ReporterConfirmationDialogComponent implements ModalComponent<Repor
 		const specSetId = this.parameters.specSetId;
 		const specItemTypeId = this.parameters.itemTypeId;
 		const report = this.parameters.report;
-		this.jamaRESTAPISpec = await this.jamaScannerService.scanProject(specSetId, specItemTypeId, report, this.progress);
+		this.jamaSpec = await this.jamaScannerService.scanProject(specSetId, specItemTypeId, report, this.progress);
 
 		this.progress = { running: false };
 		scanSubscription.unsubscribe();
-
-		console.log(this.jamaRESTAPISpec);
 	}
 }
