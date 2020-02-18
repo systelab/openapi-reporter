@@ -27,6 +27,7 @@ export class ReporterConfirmationDialogComponent implements ModalComponent<Repor
 
 	public parameters: ReporterConfirmationDialogParameters;
 	public progress: ProgressData = { running: false };
+	public currentOperationMessage = '';
 	public jamaRESTAPISpec: JamaRESTAPISpec;
 
 	public static getParameters(): ReporterConfirmationDialogParameters {
@@ -50,7 +51,7 @@ export class ReporterConfirmationDialogComponent implements ModalComponent<Repor
 	}
 
 	public isUploadEnabled() {
-		return false;
+		return !!this.jamaRESTAPISpec;
 	}
 
 	public close(): void {
@@ -61,13 +62,22 @@ export class ReporterConfirmationDialogComponent implements ModalComponent<Repor
 	}
 
 	public doUpload() {
-		// TODO
+
+		this.currentOperationMessage = 'Uploading JAMA specification...';
+		this.progress = { running: true, current: 0, total: 100 };
 	}
 
 	private async scanJAMASpecificationSet() {
 
+		this.currentOperationMessage = 'Scanning selected JAMA specification...';
 		this.progress = { running: true, current: 0, total: 100 };
-		this.jamaRESTAPISpec = await this.jamaScannerService.scanProject(this.parameters.specSetId, this.parameters.report, this.progress);
+
+		const specSetId = this.parameters.specSetId;
+		const specItemTypeId = this.parameters.itemTypeId;
+		const report = this.parameters.report;
+		this.jamaRESTAPISpec = await this.jamaScannerService.scanProject(specSetId, specItemTypeId, report, this.progress);
+		console.log(this.jamaRESTAPISpec);
+
 		this.progress = { running: false };
 	}
 }
