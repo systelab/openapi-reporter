@@ -24,12 +24,12 @@ export class JAMAScannerService {
 				private jamaDataTypeFormatter: JAMADataTypeFormatterService) {
 	}
 
-	public async scanProject(specSetId: number, specItemTypeId: number,
-							specReport: SpecReportData, progress: ProgressData): Promise<JamaRESTAPISpec> {
+	public async scanProject(projectId: number, specSetId: number, specItemTypeId: number,
+							specReport: SpecReportData): Promise<JamaRESTAPISpec> {
 
 		this.scanProgress.next({running: true, current: 0, total: 100});
 
-		const jamaSpec: JamaRESTAPISpec = await this.scanTopLevelItems(specSetId, specItemTypeId);
+		const jamaSpec: JamaRESTAPISpec = await this.scanTopLevelItems(projectId, specSetId, specItemTypeId);
 		this.scanProgress.next({running: true, current: 10, total: 100});
 
 		await this.scanEndpointGroups(jamaSpec, specReport.endpointGroups);
@@ -48,7 +48,7 @@ export class JAMAScannerService {
 		return jamaSpec;
 	}
 
-	private async scanTopLevelItems(specSetId: number, specItemTypeId: number): Promise<JamaRESTAPISpec> {
+	private async scanTopLevelItems(projectId: number, specSetId: number, specItemTypeId: number): Promise<JamaRESTAPISpec> {
 
 		let endpointsFolderId = -1;
 		let dataTypesFolderId = -1;
@@ -75,6 +75,7 @@ export class JAMAScannerService {
 		}
 
 		const jamaSpec: JamaRESTAPISpec = {
+			projectId: projectId,
 			setId: specSetId,
 			specItemTypeId: specItemTypeId,
 

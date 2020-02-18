@@ -96,10 +96,11 @@ export class ReporterConfirmationDialogComponent implements ModalComponent<Repor
 			}
 		);
 
+		const projectId = this.parameters.projectId;
 		const specSetId = this.parameters.specSetId;
 		const specItemTypeId = this.parameters.itemTypeId;
-		const report = this.parameters.report;
-		this.jamaSpec = await this.jamaScannerService.scanProject(specSetId, specItemTypeId, report, this.progress);
+		const specReport = this.parameters.report;
+		this.jamaSpec = await this.jamaScannerService.scanProject(projectId, specSetId, specItemTypeId, specReport);
 
 		this.progress = { running: false };
 		scanSubscription.unsubscribe();

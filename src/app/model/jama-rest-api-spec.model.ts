@@ -3,6 +3,7 @@ import { SpecModelData } from './spec-model-data.model';
 
 
 export interface JamaRESTAPISpec {
+	projectId: number;
 	setId: number;
 	specItemTypeId: number;
 
