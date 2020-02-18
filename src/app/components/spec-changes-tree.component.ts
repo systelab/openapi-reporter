@@ -33,7 +33,6 @@ export class SpecChangesTreeComponent extends AbstractTree implements OnInit, On
 
 	private refresh(): void {
 
-		console.log('Refreshing changes tree...', this.jamaSpec);
 		const newTreeNodes: TreeNode[] = [];
 
 		newTreeNodes.push(this.buildItemsToAddNode());
