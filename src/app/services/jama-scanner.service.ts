@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 import { ProgressData } from '@model';
 import { JamaRESTAPISpec, JamaRESTAPIAction, JamaRESTAPIEndpointGroup, JamaRESTAPIEndpoint } from '@model';
@@ -15,6 +16,9 @@ import { JAMADataTypeFormatterService } from './jama-data-type-formatter.service
 })
 export class JAMAScannerService {
 
+	private scanProgress = new BehaviorSubject<ProgressData>(null);
+	public scanProgress$ = this.scanProgress.asObservable();
+
 	constructor(private itemsService: ItemsService,
 				private jamaEndpointFormatter: JAMAEndpointFormatterService,
 				private jamaDataTypeFormatter: JAMADataTypeFormatterService) {
@@ -23,20 +27,23 @@ export class JAMAScannerService {
 	public async scanProject(specSetId: number, specItemTypeId: number,
 							specReport: SpecReportData, progress: ProgressData): Promise<JamaRESTAPISpec> {
 
+		this.scanProgress.next({running: true, current: 0, total: 100});
+
 		const jamaSpec: JamaRESTAPISpec = await this.scanTopLevelItems(specSetId, specItemTypeId);
-		progress = { ...progress, current: 10 };
+		this.scanProgress.next({running: true, current: 10, total: 100});
 
 		await this.scanEndpointGroups(jamaSpec, specReport.endpointGroups);
-		progress = { ...progress, current: 50 };
+		this.scanProgress.next({running: true, current: 50, total: 100});
 
 		await this.scanDataTypes(jamaSpec, specReport.models);
-		progress = { ...progress, current: 90 };
+		this.scanProgress.next({running: true, current: 90, total: 100});
 
 		this.setEndpointMissingModelIds(jamaSpec);
 		this.setDataTypeMissingModelIds(jamaSpec);
 		this.detectUnchangedEndpoints(jamaSpec);
 		this.detectUnchangedDataTypes(jamaSpec);
-		progress = { ...progress, current: 100 };
+		this.scanProgress.next({running: true, current: 100, total: 100});
+		this.scanProgress.next(null);
 
 		return jamaSpec;
 	}
