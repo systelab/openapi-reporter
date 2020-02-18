@@ -9,6 +9,7 @@ import { SpecModelData } from '@model';
 import { ItemsService, ItemDataListWrapper } from '@jama';
 import { JAMAEndpointFormatterService } from './jama-endpoint-formatter.service';
 import { JAMADataTypeFormatterService } from './jama-data-type-formatter.service';
+import { JAMAEndpointExampleFormatterService } from './jama-endpoint-example-formatter.service';
 
 
 @Injectable({
@@ -21,6 +22,7 @@ export class JAMAScannerService {
 
 	constructor(private itemsService: ItemsService,
 				private jamaEndpointFormatter: JAMAEndpointFormatterService,
+				private jamaEndpointExampleFormatter: JAMAEndpointExampleFormatterService,
 				private jamaDataTypeFormatter: JAMADataTypeFormatterService) {
 	}
 
@@ -252,15 +254,28 @@ export class JAMAScannerService {
 					const exampleName = itemsData.data[i].fields.name;
 					const example: SpecEndpointExample = endpoint.examples.find((e) => e.title === exampleName);
 					if (example) {
-						// Example found, update it
+						// Example found, check if it has changed
 						example.id = itemsData.data[i].id;
-						const jamaExampleToUpdate: JamaRESTAPIExample = {
-							action: JamaRESTAPIAction.Update,
-							textItemId: example.id,
-							title: exampleName,
-							description: itemsData.data[i].fields.description
-						};
-						jamaEndpoint.examples.push(jamaExampleToUpdate);
+						const newExampleDescription = this.jamaEndpointExampleFormatter.formatDescription(example);
+						if (newExampleDescription !== itemsData.data[i].fields.description) {
+							// Example description changed, update it
+							const jamaExampleToUpdate: JamaRESTAPIExample = {
+								action: JamaRESTAPIAction.Update,
+								textItemId: example.id,
+								title: exampleName,
+								description: newExampleDescription
+							};
+							jamaEndpoint.examples.push(jamaExampleToUpdate);
+						} else {
+							// Example description unchanged, just keep it
+							const jamaExampleToKeep: JamaRESTAPIExample = {
+								action: JamaRESTAPIAction.NoAction,
+								textItemId: example.id,
+								title: exampleName,
+								description: newExampleDescription
+							};
+							jamaEndpoint.examples.push(jamaExampleToKeep);
+						}
 					} else {
 						// Example not found in spec, delete it
 						const jamaExampleToDelete: JamaRESTAPIExample = {
@@ -291,7 +306,7 @@ export class JAMAScannerService {
 					action: JamaRESTAPIAction.Create,
 					textItemId: -1,
 					title: exampleTitle,
-					description: endpoint.examples[j].description
+					description: this.jamaEndpointExampleFormatter.formatDescription(endpoint.examples[j])
 				};
 				jamaEndpoint.examples.push(jamaExampleToCreate);
 			}
