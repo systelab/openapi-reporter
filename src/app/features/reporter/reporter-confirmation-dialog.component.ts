@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { DialogRef, ModalComponent, SystelabModalContext } from 'systelab-components/widgets/modal';
+import { Subscription } from 'rxjs';
 
 import { SpecReportData, JamaRESTAPISpec, ProgressData } from '@model';
 import { ItemsService } from '@jama/api/items.service';
@@ -63,21 +64,30 @@ export class ReporterConfirmationDialogComponent implements ModalComponent<Repor
 
 	public doUpload() {
 
-		this.currentOperationMessage = 'Uploading JAMA specification...';
+		this.currentOperationMessage = 'Uploading JAMA specification';
 		this.progress = { running: true, current: 0, total: 100 };
 	}
 
 	private async scanJAMASpecificationSet() {
 
-		this.currentOperationMessage = 'Scanning selected JAMA specification...';
+		this.currentOperationMessage = 'Scanning selected JAMA specification set';
 		this.progress = { running: true, current: 0, total: 100 };
+		const scanSubscription: Subscription = this.jamaScannerService.scanProgress$.subscribe(
+			(scanProgress) => {
+				if (!!scanProgress) {
+					this.progress = scanProgress;
+				}
+			}
+		);
 
 		const specSetId = this.parameters.specSetId;
 		const specItemTypeId = this.parameters.itemTypeId;
 		const report = this.parameters.report;
 		this.jamaRESTAPISpec = await this.jamaScannerService.scanProject(specSetId, specItemTypeId, report, this.progress);
-		console.log(this.jamaRESTAPISpec);
 
 		this.progress = { running: false };
+		scanSubscription.unsubscribe();
+
+		console.log(this.jamaRESTAPISpec);
 	}
 }

@@ -1,12 +1,18 @@
 <systelab-dialog-header (close)="close()">Report to Jama (2/2)</systelab-dialog-header>
 <div class="slab-flex-1 slab-overflow-container container-fluid">
 
-    <div *ngIf="progress.running">
-        <div>{{currentOperationMessage}}</div>
-        <div>{{progress.current}} %</div>
+    <div *ngIf="progress.running" [style.margin-top.px]="200" class="ml-5 mr-5">
+        <div>{{currentOperationMessage}} ({{progress.current}}%)...</div>
+        <div class="row mt-1">
+            <div class="col-md-12">
+                <div class="progress">
+                    <div class="progress-bar bg-info" role="progressbar" [style.width.%]="progress.current"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div *ngIf="!progress.running">
+    <div *ngIf="!progress.running" class="ml-5 mr-5 mt-5 mb-5">
         <div>Scan has been completed!!</div>
     </div>
 
