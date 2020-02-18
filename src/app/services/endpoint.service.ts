@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { SpecEndpointData, SpecEndpointPathParameter, SpecEndpointQueryString, SpecEndpointRequestBody, SpecEndpointResponse, SpecEndpointResponseHeader } from '@model';
+import { SpecEndpointData, SpecEndpointPathParameter, SpecEndpointQueryString } from '@model';
+import { SpecEndpointRequestBody, SpecEndpointResponse, SpecEndpointResponseHeader, SpecEndpointExample } from '@model';
 import { OpenAPIEndpoint, OpenAPIParameter, OpenAPIParameterType } from '@model';
 import { OpenAPIRequestBody, OpenAPIResponse, OpenAPIHeader } from '@model';
 
@@ -25,6 +26,7 @@ export class EndpointService {
 			pathParameters: [],
 			queryStrings: [],
 			responses: [],
+			examples: [],
 			collapsed: true
 		};
 
@@ -69,9 +71,8 @@ export class EndpointService {
 				}
 
 				endpoint.pathParameters.push(pathParameter);
-			}
-			else if (openAPIParameter.in === OpenAPIParameterType.Query)
-			{
+
+			} else if (openAPIParameter.in === OpenAPIParameterType.Query) {
 				const queryString: SpecEndpointQueryString = {
 					name: openAPIParameter.name,
 					description: openAPIParameter.description,
@@ -91,10 +92,10 @@ export class EndpointService {
 		}
 	}
 
-	private addRequestBodyFromOpenAPI(endpoint: SpecEndpointData, openAPIRequestBody: OpenAPIRequestBody)
-	{
-		if (openAPIRequestBody.content)
-		{
+	private addRequestBodyFromOpenAPI(endpoint: SpecEndpointData, openAPIRequestBody: OpenAPIRequestBody) {
+
+		if (openAPIRequestBody.content) {
+
 			const mediaTypes: string[] = Object.keys(openAPIRequestBody.content);
 			if (mediaTypes.length > 0) {
 
@@ -105,17 +106,22 @@ export class EndpointService {
 				}
 
 				const schema = openAPIRequestBody.content[mediaType].schema;
-				const schemaReference = schema["$ref"];
+				const schemaReference = schema['$ref'];
 				if (!!schemaReference) {
-					const modelName = schemaReference.startsWith("#/components/schemas/") ? schemaReference.substr(21) : schemaReference;
+					const modelName = schemaReference.startsWith('#/components/schemas/') ? schemaReference.substr(21) : schemaReference;
 					requestBody.modelName = modelName;
 				}
 
 				const example = openAPIRequestBody.content[mediaType].example;
 				if (!!example) {
 					requestBody.example = example;
+					const requestBodyExample: SpecEndpointExample = {
+						title: endpoint.method.toUpperCase() + ' ' + endpoint.url + ' - Request body example',
+						description: example
+					};
+					endpoint.examples.push(requestBodyExample);
 				}
-		
+
 				endpoint.requestBody = requestBody;
 			}
 		}
@@ -149,26 +155,29 @@ export class EndpointService {
 			}
 		}
 
-		if (openAPIResponse.content)
-		{
+		if (openAPIResponse.content) {
 			const mediaTypes: string[] = Object.keys(openAPIResponse.content);
 			if (mediaTypes.length > 0) {
 				const mediaType: string = mediaTypes[0];
 				response.mediaType = mediaType;
-	
+
 				const schema = openAPIResponse.content[mediaType].schema;
-				const schemaReference = schema["$ref"];
-				if (!!schemaReference)
-				{
-					const modelName: string = schemaReference.startsWith("#/components/schemas/") ? schemaReference.substr(21) : schemaReference;
+				const schemaReference = schema['$ref'];
+				if (!!schemaReference) {
+					const modelName: string = schemaReference.startsWith('#/components/schemas/') ? schemaReference.substr(21) : schemaReference;
 					if (modelName) {
 						response.modelName = modelName;
 					}
 				}
-	
+
 				const example = openAPIResponse.content[mediaType].example;
 				if (!!example) {
 					response.example = example;
+					const responseExample: SpecEndpointExample = {
+						title: endpoint.method.toUpperCase() + ' ' + endpoint.url + ' - Response example for status code ' + response.statusCode,
+						description: example
+					};
+					endpoint.examples.push(responseExample);
 				}
 			}
 		}
