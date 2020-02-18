@@ -6,7 +6,7 @@ import { JamaRESTAPISpec, JamaRESTAPIAction, JamaRESTAPIEndpointGroup, JamaRESTA
 import { JamaRESTAPIExample, JamaRESTAPIDataType } from '@model';
 import { SpecReportData, SpecEndpointGroupData, SpecEndpointData, SpecEndpointExample } from '@model';
 import { SpecModelData } from '@model';
-import { ItemsService, ItemDataListWrapper } from '@jama';
+import { ItemsService, RequestItem, CreatedResponse } from '@jama';
 import { JAMAEndpointFormatterService } from './jama-endpoint-formatter.service';
 import { JAMADataTypeFormatterService } from './jama-data-type-formatter.service';
 
@@ -27,6 +27,7 @@ export class JAMAUploaderService {
 	public async uploadProject(jamaSpec: JamaRESTAPISpec): Promise<void> {
 
 		this.uploadProgress.next({running: true, current: 0, total: this.getAPIStepsCount(jamaSpec)});
+		console.log(this.uploadProgress.value);
 
 		await this.createMissingItems(jamaSpec);
 
@@ -90,7 +91,21 @@ export class JAMAUploaderService {
 
 	private async createMissingItems(jamaSpec: JamaRESTAPISpec): Promise<void> {
 
-		// TODO
+		if (jamaSpec.endpointsFolderAction === JamaRESTAPIAction.Create) {
+			jamaSpec.endpointsFolderId = await this.createFolder(jamaSpec.projectId, jamaSpec.setId, 'Endpoints');
+			jamaSpec.endpointsFolderAction = JamaRESTAPIAction.NoAction;
+			this.addProgressStep();
+		}
+
+		// TODO: Create missing endpoint items
+
+		if (jamaSpec.dataTypesFolderAction === JamaRESTAPIAction.Create) {
+			jamaSpec.dataTypesFolderId = await this.createFolder(jamaSpec.projectId, jamaSpec.setId, 'Data Types');
+			jamaSpec.dataTypesFolderAction = JamaRESTAPIAction.NoAction;
+			this.addProgressStep();
+		}
+
+		// TODO: Create missing data type items
 	}
 
 	private setEndpointMissingModelIds(jamaSpec: JamaRESTAPISpec) {
@@ -170,5 +185,35 @@ export class JAMAUploaderService {
 		// 		}
 		// 	}
 		// }
+	}
+
+	private async createFolder(projectId: number, parentItemId: number, folderName: string): Promise<number> {
+
+		const body: RequestItem = {
+			project: projectId,
+			itemType: 32, // Folder
+			childItemType: undefined,
+			location: {
+				parent: {
+					project: projectId,
+					item: parentItemId
+				}
+			},
+			fields: {
+				name: folderName,
+				description: folderName
+			}
+		}
+
+		const createItemResponse: CreatedResponse = await this.itemsService.addItem(body).toPromise();
+		if (createItemResponse) {
+			return createItemResponse.id;
+		}
+	}
+
+	private addProgressStep(): void {
+		const newProgress = this.uploadProgress.value;
+		newProgress.current = Math.min(this.uploadProgress.value.current + 1, this.uploadProgress.value.total);
+		this.uploadProgress.next(newProgress);
 	}
 }
