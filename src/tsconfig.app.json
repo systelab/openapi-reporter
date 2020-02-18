@@ -11,7 +11,7 @@
       "@jama": ["app/jama/index.ts"],
       "@jama/*": ["app/jama/*"],
       "@model": ["app/model/index.ts"],
-      "@services/*": ["app/service/index.ts"]
+      "@services": ["app/services/index.ts"]
     },
     "module": "es2015",
     "types": []
