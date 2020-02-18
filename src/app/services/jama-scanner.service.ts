@@ -338,6 +338,7 @@ export class JAMAScannerService {
 							action: JamaRESTAPIAction.Update,
 							specItemId: model.id,
 							title: dataTypeName,
+							description: itemsData.data[i].fields.description,
 							data: model,
 							examples: []
 						};
