@@ -24,7 +24,7 @@ export class SpecEndpointResponse {
 	statusCode: number;
 	description?: string;
 	mediaType?: string;
-	modelId?: string;
+	modelId?: number;
 	modelName?: string;
 	headers?: SpecEndpointResponseHeader[];
 	example?: string;
@@ -34,6 +34,12 @@ export class SpecEndpointResponseHeader {
 	name: string;
 	description: string;
 	type?: string;
+}
+
+export class SpecEndpointExample {
+	id?: number;
+	title: string;
+	description: string;
 }
 
 export class SpecEndpointData {
@@ -47,5 +53,7 @@ export class SpecEndpointData {
 	queryStrings: SpecEndpointQueryString[];
 	requestBody?: SpecEndpointRequestBody;
 	responses: SpecEndpointResponse[];
+	examples: SpecEndpointExample[];
 	collapsed: boolean;
 }
+
