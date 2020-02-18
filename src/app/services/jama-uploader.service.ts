@@ -6,7 +6,7 @@ import { JamaRESTAPISpec, JamaRESTAPIAction, JamaRESTAPIEndpointGroup, JamaRESTA
 import { JamaRESTAPIExample, JamaRESTAPIDataType } from '@model';
 import { SpecReportData, SpecEndpointGroupData, SpecEndpointData, SpecEndpointExample } from '@model';
 import { SpecModelData } from '@model';
-import { ItemsService, RequestItem, CreatedResponse, AbstractRestResponse } from '@jama';
+import { ItemsService, RequestItem, CreatedResponse, AbstractRestResponse, RequestPatchOperation } from '@jama';
 import { JAMAEndpointFormatterService } from './jama-endpoint-formatter.service';
 import { JAMADataTypeFormatterService } from './jama-data-type-formatter.service';
 
@@ -27,7 +27,6 @@ export class JAMAUploaderService {
 	public async uploadProject(jamaSpec: JamaRESTAPISpec): Promise<void> {
 
 		this.uploadProgress.next({running: true, current: 0, total: this.getAPIStepsCount(jamaSpec)});
-		console.log(this.uploadProgress.value);
 
 		await this.updateTreeStructure(jamaSpec);
 
@@ -102,6 +101,10 @@ export class JAMAUploaderService {
 
 			for (const jamaEndpoint of jamaEndpointGroup.endpoints) {
 				await this.updateEndpointSpecification(jamaSpec, jamaEndpoint, jamaEndpointGroup.folderId);
+
+				for (const jamaExample of jamaEndpoint.examples) {
+					await this.updateEndpointExampleText(jamaSpec, jamaExample, jamaEndpoint.specItemId);
+				}
 			}
 		}
 
@@ -154,8 +157,31 @@ export class JAMAUploaderService {
 		}
 	}
 
-	private async updateEndpointExampleText(jamaSpec: JamaRESTAPISpec, jamaExample: JamaRESTAPIExample): Promise<void> {
-		// TODO
+	private async updateEndpointExampleText(jamaSpec: JamaRESTAPISpec, jamaExample: JamaRESTAPIExample,
+											endpointSpecId: number): Promise<void> {
+		if (jamaExample.action === JamaRESTAPIAction.Create) {
+			// Create text for example
+			const projectId = jamaSpec.projectId;
+			const specItemTypeId = jamaSpec.specItemTypeId;
+			const exampleName = jamaExample.title;
+			const exampleDescription = jamaExample.description;
+			jamaExample.textItemId = await this.createText(projectId, specItemTypeId, endpointSpecId, exampleName, exampleDescription);
+			jamaSpec.endpointsFolderAction = JamaRESTAPIAction.NoAction;
+			this.addProgressStep();
+
+		} else if (jamaExample.action === JamaRESTAPIAction.Update) {
+			// Update text description for example
+			const exampleItemId = jamaExample.textItemId;
+			const exampleDescription = jamaExample.description;
+			await this.updateItemDescription(exampleItemId, exampleDescription);
+			this.addProgressStep();
+
+		} else if (jamaExample.action === JamaRESTAPIAction.Delete) {
+			// Delete text for example
+			await this.deleteItem(jamaExample.textItemId);
+			jamaExample.action = JamaRESTAPIAction.NoAction;
+			this.addProgressStep();
+		}
 	}
 
 	private setEndpointMissingModelIds(jamaSpec: JamaRESTAPISpec) {
@@ -281,6 +307,41 @@ export class JAMAUploaderService {
 		if (createItemResponse) {
 			return createItemResponse.id;
 		}
+	}
+
+	private async createText(projectId: number, specItemTypeId: number, parentItemId: number,
+							title: string, description: string): Promise<number> {
+
+		const body: RequestItem = {
+			project: projectId,
+			itemType: 33, // Text
+			childItemType: specItemTypeId,
+			location: {
+				parent: {
+					item: parentItemId
+				}
+			},
+			fields: {
+				name: title,
+				description: description
+			}
+		};
+
+		const createItemResponse: CreatedResponse = await this.itemsService.addItem(body).toPromise();
+		if (createItemResponse) {
+			return createItemResponse.id;
+		}
+	}
+
+	private async updateItemDescription(itemId: number, newDescription: string): Promise<void> {
+
+		const patchDescription: RequestPatchOperation = {
+			op: 'replace',
+			path: '/fields/description',
+			value: newDescription
+		};
+
+		const response = await this.itemsService.patchItem([patchDescription], itemId).toPromise();
 	}
 
 	private async deleteItem(itemId: number): Promise<void> {
