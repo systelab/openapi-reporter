@@ -114,7 +114,9 @@ export class JAMAUploaderService {
 			this.addProgressStep();
 		}
 
-		// TODO: Create missing data type items
+		for (const jamaDataType of jamaSpec.dataTypes) {
+			await this.updateDataTypeSpecification(jamaSpec, jamaDataType);
+		}
 	}
 
 	private async updateEndpointGroupFolder(jamaSpec: JamaRESTAPISpec, jamaEndpointGroup: JamaRESTAPIEndpointGroup): Promise<void> {
@@ -146,7 +148,7 @@ export class JAMAUploaderService {
 			const specItemTypeId = jamaSpec.specItemTypeId;
 			const specName = jamaEndpoint.title;
 			jamaEndpoint.specItemId = await this.createSpecification(projectId, specItemTypeId, endpointGroupFolderId, specName);
-			jamaSpec.endpointsFolderAction = JamaRESTAPIAction.Update;
+			jamaEndpoint.action = JamaRESTAPIAction.Update;
 			this.addProgressStep();
 
 		} else if (jamaEndpoint.action === JamaRESTAPIAction.Delete) {
@@ -180,6 +182,26 @@ export class JAMAUploaderService {
 			// Delete text for example
 			await this.deleteItem(jamaExample.textItemId);
 			jamaExample.action = JamaRESTAPIAction.NoAction;
+			this.addProgressStep();
+		}
+	}
+
+	private async updateDataTypeSpecification(jamaSpec: JamaRESTAPISpec, jamaDataType: JamaRESTAPIDataType) {
+
+		if (jamaDataType.action === JamaRESTAPIAction.Create) {
+			// Create specification for data type
+			const projectId = jamaSpec.projectId;
+			const specItemTypeId = jamaSpec.specItemTypeId;
+			const parentItemId = jamaSpec.dataTypesFolderId;
+			const specName = jamaDataType.title;
+			jamaDataType.specItemId = await this.createSpecification(projectId, specItemTypeId, parentItemId, specName);
+			jamaDataType.action = JamaRESTAPIAction.Update;
+			this.addProgressStep();
+
+		} else if (jamaDataType.action === JamaRESTAPIAction.Delete) {
+			// Delete specification for data type
+			await this.deleteItem(jamaDataType.specItemId);
+			jamaDataType.action = JamaRESTAPIAction.NoAction;
 			this.addProgressStep();
 		}
 	}
@@ -237,30 +259,28 @@ export class JAMAUploaderService {
 		}
 	}
 
-	private updateEndpointDescriptions(jamaSpec: JamaRESTAPISpec) {
+	private async updateEndpointDescriptions(jamaSpec: JamaRESTAPISpec) {
 
-		// for (const jamaEndpointGroup of jamaSpec.endpointGroups) {
-		// 	for (const jamaEndpoint of jamaEndpointGroup.endpoints) {
-		// 		if (jamaEndpoint.action === JamaRESTAPIAction.Update) {
-		// 			const newDescription = this.jamaEndpointFormatter.formatDescription(jamaEndpoint);
-		// 			if (jamaEndpoint.description === newDescription) {
-		// 				jamaEndpoint.action = JamaRESTAPIAction.NoAction;
-		// 			}
-		// 		}
-		// 	}
-		// }
+		for (const jamaEndpointGroup of jamaSpec.endpointGroups) {
+			for (const jamaEndpoint of jamaEndpointGroup.endpoints) {
+				if (jamaEndpoint.action === JamaRESTAPIAction.Update) {
+					const newDescription = this.jamaEndpointFormatter.formatDescription(jamaEndpoint);
+					await this.updateItemDescription(jamaEndpoint.specItemId, newDescription);
+					this.addProgressStep();
+				}
+			}
+		}
 	}
 
-	private updateDataTypeDescriptions(jamaSpec: JamaRESTAPISpec) {
+	private async updateDataTypeDescriptions(jamaSpec: JamaRESTAPISpec) {
 
-		// for (const jamaDataType of jamaSpec.dataTypes) {
-		// 	if (jamaDataType.action === JamaRESTAPIAction.Update) {
-		// 		const newDescription = this.jamaDataTypeFormatter.formatDescription(jamaDataType);
-		// 		if (jamaDataType.description === newDescription) {
-		// 			jamaDataType.action = JamaRESTAPIAction.NoAction;
-		// 		}
-		// 	}
-		// }
+		for (const jamaDataType of jamaSpec.dataTypes) {
+			if (jamaDataType.action === JamaRESTAPIAction.Update) {
+				const newDescription = this.jamaDataTypeFormatter.formatDescription(jamaDataType);
+				await this.updateItemDescription(jamaDataType.specItemId, newDescription);
+				this.addProgressStep();
+			}
+		}
 	}
 
 	private async createFolder(projectId: number, specItemTypeId: number, parentItemId: number, folderName: string): Promise<number> {
@@ -280,7 +300,10 @@ export class JAMAUploaderService {
 			}
 		};
 
+		console.log('Creating folder \"' + folderName + '\"...');
 		const createItemResponse: CreatedResponse = await this.itemsService.addItem(body).toPromise();
+		console.log('Folder creation result:', createItemResponse);
+
 		if (createItemResponse) {
 			return createItemResponse.id;
 		}
@@ -303,7 +326,10 @@ export class JAMAUploaderService {
 			}
 		};
 
+		console.log('Creating specification \"' + specName + '\"...');
 		const createItemResponse: CreatedResponse = await this.itemsService.addItem(body).toPromise();
+		console.log('Specification creation result:', createItemResponse);
+
 		if (createItemResponse) {
 			return createItemResponse.id;
 		}
@@ -327,7 +353,10 @@ export class JAMAUploaderService {
 			}
 		};
 
+		console.log('Creating text \"' + title + '\"...');
 		const createItemResponse: CreatedResponse = await this.itemsService.addItem(body).toPromise();
+		console.log('Text creation result:', createItemResponse);
+
 		if (createItemResponse) {
 			return createItemResponse.id;
 		}
@@ -341,12 +370,16 @@ export class JAMAUploaderService {
 			value: newDescription
 		};
 
+		console.log('Updating description of item ' + itemId + '...');
 		const response = await this.itemsService.patchItem([patchDescription], itemId).toPromise();
+		console.log('Description update result:', response);
 	}
 
 	private async deleteItem(itemId: number): Promise<void> {
 
-		await this.itemsService.deleteItem(itemId).toPromise();
+		console.log('Deleting item ' + itemId + '...');
+		const response = await this.itemsService.deleteItem(itemId).toPromise();
+		console.log('Item deletion result:', response);
 	}
 
 	private addProgressStep(): void {
