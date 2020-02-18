@@ -34,6 +34,7 @@ import { SpecSetComboBox } from './components/spec-set-combobox.component';
 import { GridHeaderContextMenuComponent } from 'systelab-components/widgets/grid/contextmenu/grid-header-context-menu.component';
 import { DialogService, MessagePopupService } from 'systelab-components/widgets/modal';
 import { GridContextMenuCellRendererComponent } from 'systelab-components/widgets/grid/contextmenu/grid-context-menu-cell-renderer.component';
+import { SpecChangesTreeComponent } from './components/spec-changes-tree.component';
 
 
 
@@ -72,7 +73,8 @@ import { GridContextMenuCellRendererComponent } from 'systelab-components/widget
 		ReporterConfirmationDialogComponent,
 		ProjectComboBox,
 		ItemTypeComboBox,
-		SpecSetComboBox
+		SpecSetComboBox,
+		SpecChangesTreeComponent
 	],
 	providers: [
 		MessagePopupService,
