@@ -114,10 +114,10 @@ export class EndpointService {
 
 				const example = openAPIRequestBody.content[mediaType].example;
 				if (!!example) {
-					requestBody.example = JSON.stringify(example);
+					requestBody.example = JSON.stringify(example, null, 4);
 					const requestBodyExample: SpecEndpointExample = {
 						title: endpoint.method.toUpperCase() + ' ' + endpoint.url + ' - Request body example',
-						description: JSON.stringify(example)
+						description: JSON.stringify(example, null, 4)
 					};
 					endpoint.examples.push(requestBodyExample);
 				}
@@ -172,10 +172,10 @@ export class EndpointService {
 
 				const example = openAPIResponse.content[mediaType].example;
 				if (!!example) {
-					response.example = JSON.stringify(example);
+					response.example = JSON.stringify(example, null, 4);
 					const responseExample: SpecEndpointExample = {
 						title: endpoint.method.toUpperCase() + ' ' + endpoint.url + ' - Response example for status code ' + response.statusCode,
-						description: JSON.stringify(example)
+						description: JSON.stringify(example, null, 4)
 					};
 					endpoint.examples.push(responseExample);
 				}

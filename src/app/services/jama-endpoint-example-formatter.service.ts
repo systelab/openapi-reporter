@@ -13,7 +13,7 @@ export class JAMAEndpointExampleFormatterService {
 
 	public formatDescription(example: SpecEndpointExample): string {
 
-		const description = '<p>' + example.title + ':</p>' + '<pre>' + example.description + '</pre>';
+		const description = '<pre>' + example.description + '</pre>';
 		return description;
 	}
 }
