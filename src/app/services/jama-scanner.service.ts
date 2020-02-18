@@ -118,7 +118,7 @@ export class JAMAScannerService {
 							endpoints: []
 						};
 
-						this.scanEndpoints(specItemTypeId, jamaEndpointGroupToKeep, endpointGroup);
+						await this.scanEndpoints(specItemTypeId, jamaEndpointGroupToKeep, endpointGroup);
 						jamaSpec.endpointGroups.push(jamaEndpointGroupToKeep);
 
 					} else {
@@ -153,7 +153,7 @@ export class JAMAScannerService {
 					name: groupName,
 					endpoints: []
 				};
-				this.scanEndpoints(specItemTypeId, jamaEndpointGroupToCreate, endpointGroups[j]);
+				await this.scanEndpoints(specItemTypeId, jamaEndpointGroupToCreate, endpointGroups[j]);
 				jamaSpec.endpointGroups.push(jamaEndpointGroupToCreate);
 			}
 		}
@@ -188,7 +188,7 @@ export class JAMAScannerService {
 							data: endpoint,
 							examples: []
 						};
-						this.scanEndpointExamples(jamaEndpointToUpdate, endpoint);
+						await this.scanEndpointExamples(jamaEndpointToUpdate, endpoint);
 						jamaEndpointGroup.endpoints.push(jamaEndpointToUpdate);
 					} else {
 						// Endpoint not found in spec, delete it
@@ -227,7 +227,7 @@ export class JAMAScannerService {
 					data: endpointGroup.endpoints[j],
 					examples: []
 				};
-				this.scanEndpointExamples(jamaEndpointToCreate, endpointGroup.endpoints[j]);
+				await this.scanEndpointExamples(jamaEndpointToCreate, endpointGroup.endpoints[j]);
 				jamaEndpointGroup.endpoints.push(jamaEndpointToCreate);
 			}
 		}
