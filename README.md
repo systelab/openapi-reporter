@@ -9,6 +9,7 @@ OpenAPI reporter will speed up your REST API development by generating documenta
 Only supports OpenAPI 3.0 JSON format.
 
 You can find the validated application deployed by Travis at https://systelab.github.io/openapi-reporter/
+
 The test environment is at https://systelab.github.io/openapi-reporter-test/
 
 ## Getting Started
