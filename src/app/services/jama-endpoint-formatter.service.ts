@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { JamaRESTAPIEndpoint, SpecEndpointPathParameter, SpecEndpointQueryString } from '@model';
+import { JamaRESTAPIEndpoint, SpecEndpointPathParameter, SpecEndpointQueryString, SpecEndpointRequestBody, SpecEndpointResponse } from '@model';
 import { SpecEndpointData } from '@model';
 
 
@@ -28,12 +28,29 @@ export class JAMAEndpointFormatterService {
 			description += this.formatQueryStrings(jamaEndpoint.data.queryStrings);
 		}
 
+		if (!!jamaEndpoint.data.requestBody) {
+			description += this.formatRequestBody(jamaEndpoint.data.requestBody);
+		}
+
+		if (jamaEndpoint.data.responses.length > 0) {
+
+			description += '<p><b>Responses</b></p>\n';
+			description += '<br>\n';
+			description += '<ul>\n';
+			for (const response of jamaEndpoint.data.responses) {
+				description += this.formatResponse(response);
+			}
+			description += '</ul>\n';
+			description += '<br>\n';
+		}
+
 		return description;
 	}
 
 	private formatPathParameters(pathParameters: SpecEndpointPathParameter[]): string {
 
 		let output = '<p><b>Path Parameters</b></p>\n';
+		output += '<br>\n';
 		output += '<ul>\n';
 
 		for (const pathParameter of pathParameters) {
@@ -84,49 +101,90 @@ export class JAMAEndpointFormatterService {
 		return output;
 	}
 
-	private formatRequestBody(): string {
-		return ''; // TODO
+	private formatRequestBody(requestBody: SpecEndpointRequestBody): string {
+
+		let output = '<p><b>Request Body</b></p>\n';
+		output += '<br>\n';
+		output += '<ul>\n';
+		output += '<li>';
+		output += `<i>${requestBody.mediaType}</i>`;
+		if (!!requestBody.description) {
+			output += '&nbsp;&ndash;&nbsp;' + requestBody.description;
+		}
+		output += '\n';
+
+		if (!!requestBody.modelName) {
+			output += '<ul>\n';
+			output += '<li>Format: ';
+			if (!!requestBody.modelId) {
+				output += `<a href='perspective.req#/items/${requestBody.modelId}'>${requestBody.modelName}</a>`;
+			} else {
+				output += requestBody.modelName;
+			}
+			output += '</li>\n';
+			output += '</ul>\n';
+		}
+
+		output += '</li>\n';
+		output += '</ul>\n';
+		output += '<br>\n';
+
+		return output;
 	}
 
-	// <div class="section mb-3" *ngIf="!!endpoint.requestBody">
-	//     <div class="section-title">Request Body</div>
-	//     <div class="section-content">
-	//         <ul>
-	//             <li>
-	//                 <i>{{endpoint.requestBody.mediaType}}</i>
-	//                 <span *ngIf="!!endpoint.requestBody.description">&nbsp;&ndash;&nbsp;<span [innerHTML]="endpoint.requestBody.description"></span></span>
-	//                 <ul *ngIf="!!endpoint.requestBody.modelName">
-	//                     <li>Format: <a [routerLink]="['/']" fragment="model-{{endpoint.requestBody.modelName}}">{{endpoint.requestBody.modelName}}</a></li>
-	//                 </ul>
-	//             </li>
-	//         </ul>
-	//     </div>
-	// </div>
+	private formatResponse(response: SpecEndpointResponse): string {
 
-	// <div class="section mb-3" *ngIf="endpoint.responses.length > 0">
-	//     <div class="section-title">Responses</div>
-	//     <div class="section-content">
-	//         <ul>
-	//             <li *ngFor="let response of endpoint.responses">
-	//                 {{response.statusCode}}
-	//                 <span *ngIf="response.description">&ndash;&nbsp;<span [innerHTML]="response.description"></span></span>
-	//                 <ul>
-	//                     <li *ngIf="response.mediaType">
-	//                         <i>{{response.mediaType}}</i><span *ngIf="response.modelName">&nbsp;&ndash;&nbsp;<a [routerLink]="['/']" fragment="model-{{response.modelName}}">{{response.modelName}}</a></span>
-	//                     </li>
-	//                     <ng-container *ngIf="response.headers">
-	//                         <li *ngIf="response.headers">
-	//                             <i>Headers:</i>
-	//                             <ul>
-	//                                 <li *ngFor="let header of response.headers"><i>{{header.name}}</i><span *ngIf="!!header.type">&nbsp;&ndash;&nbsp;{{header.type}}</span>&nbsp;&ndash;&nbsp;<span [innerHTML]="header.description"></span></li>
-	//                             </ul>
-	//                         </li>
-	//                     </ng-container>
-	//                 </ul>
-	//                 <br>
-	//             </li>
-	//         </ul>
-	//     </div>
-	// </div>
+		let output = '<li>\n';
+		output += response.statusCode;
 
+		if (!!response.description) {
+			output += '&nbsp;&ndash;&nbsp;' + response.description;
+		}
+
+		output += '<ul>\n';
+
+		if (!!response.mediaType) {
+			output += '<li>';
+			output += '<i>' + response.mediaType + '</i>';
+			if (!!response.modelName) {
+				output += '&nbsp;&ndash;&nbsp;';
+				if (!!response.modelId) {
+					output += `<a href='perspective.req#/items/${response.modelId}'>${response.modelName}</a>`;
+				} else {
+					output += response.modelName;
+				}
+			}
+			output += '</li>\n';
+		}
+
+		if (!!response.headers && response.headers.length > 0) {
+			output += '<li>\n';
+			output += '<i>Headers:</i>\n';
+			output += '<ul>\n';
+			for (const responseHeader of response.headers) {
+				output += '<li>';
+				output += '<i>' + responseHeader.name + '</i>';
+
+				if (!!responseHeader.type) {
+					output += '&nbsp;&ndash;&nbsp;';
+					output += responseHeader.type;
+				}
+
+				if (!!responseHeader.description) {
+					output += '&nbsp;&ndash;&nbsp;';
+					output += responseHeader.description;
+				}
+
+				output += '</li>\n';
+			}
+			output += '</ul>\n';
+			output += '</li>\n';
+		}
+
+		output += '</ul>\n';
+		output += '</li>\n';
+		output += '<br>\n';
+
+		return output;
+	}
 }
