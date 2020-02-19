@@ -17,6 +17,7 @@ export class JAMADataTypeFormatterService {
 		let description = '';
 		if (!!jamaDataType.data.description) {
 			description += '<p>' + jamaDataType.data.description + '</p>';
+			description += '<br>';
 		}
 
 		description += '<p>It shall have the following members:</p>';
