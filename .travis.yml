@@ -7,10 +7,11 @@ install:
   - npm install
 script: |
   if [ -n "$GITHUB_API_KEY" ] && [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_TAG" != "" ]; then
-    sed -b -i "s/XXX-VERSION-HERE-XXX/$TRAVIS_TAG/g" ./src/environments/environment.prod.ts
+    sed -b -i "s/XXXVERSIONHEREXXX/$TRAVIS_TAG/g" ./src/environments/environment.prod.ts
   else
-    sed -b -i "s/XXX-VERSION-HERE-XXX/Travis Build $TRAVIS_BUILD_NUMBER/g" ./src/environments/environment.prod.ts
+    sed -b -i "s/XXXVERSIONHEREXXX/Travis Build $TRAVIS_BUILD_NUMBER/g" ./src/environments/environment.prod.ts
   fi
+  cat ./src/environments/environment.prod.ts
   npm run build
 after_success: |
   if [ -n "$GITHUB_API_KEY" ]; then
