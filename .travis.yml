@@ -5,14 +5,13 @@ node_js:
   - 9
 install:
   - npm install
-script:
-  - |
+script: |
   if [ -n "$GITHUB_API_KEY" ] && [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_TAG" != "" ]; then
     sed -b -i "s/XXX-VERSION-HERE-XXX/$TRAVIS_TAG/g" ./src/environments/environment.prod.ts
   else
     sed -b -i "s/XXX-VERSION-HERE-XXX/Travis Build $TRAVIS_BUILD_NUMBER/g" ./src/environments/environment.prod.ts
   fi
-  - npm run build
+  npm run build
 after_success: |
   if [ -n "$GITHUB_API_KEY" ]; then
     git clone https://github.com/systelab/systelab.github.io.git
