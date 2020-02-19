@@ -304,8 +304,11 @@ export class JAMAUploaderService {
 		const createItemResponse: CreatedResponse = await this.itemsService.addItem(body).toPromise();
 		console.log('Folder creation result:', createItemResponse);
 
-		if (createItemResponse) {
-			return createItemResponse.id;
+		if (!!createItemResponse.meta && !!createItemResponse.meta.location) {
+			const fragments: string[] = createItemResponse.meta.location.split('/');
+			const folderId: number = +(fragments[fragments.length - 1]);
+			console.log('Created folder id:', folderId);
+			return folderId;
 		}
 	}
 
@@ -330,8 +333,11 @@ export class JAMAUploaderService {
 		const createItemResponse: CreatedResponse = await this.itemsService.addItem(body).toPromise();
 		console.log('Specification creation result:', createItemResponse);
 
-		if (createItemResponse) {
-			return createItemResponse.id;
+		if (!!createItemResponse.meta && !!createItemResponse.meta.location) {
+			const fragments: string[] = createItemResponse.meta.location.split('/');
+			const specificationId: number = +(fragments[fragments.length - 1]);
+			console.log('Created specification id:', specificationId);
+			return specificationId;
 		}
 	}
 
@@ -357,8 +363,11 @@ export class JAMAUploaderService {
 		const createItemResponse: CreatedResponse = await this.itemsService.addItem(body).toPromise();
 		console.log('Text creation result:', createItemResponse);
 
-		if (createItemResponse) {
-			return createItemResponse.id;
+		if (!!createItemResponse.meta && !!createItemResponse.meta.location) {
+			const fragments: string[] = createItemResponse.meta.location.split('/');
+			const textId: number = +(fragments[fragments.length - 1]);
+			console.log('Created text id:', textId);
+			return textId;
 		}
 	}
 

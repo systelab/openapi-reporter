@@ -25,6 +25,7 @@ export interface CreatedResponse {
 
 	id?: number;
 
+	meta?: any;
 }
 
 
