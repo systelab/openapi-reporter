@@ -32,7 +32,11 @@
               "schema": {
                 "description": "Pet object that needs to be added to the store",
                 "$ref": "#/components/schemas/Pet"
-              }
+              },
+			  "example": {
+			    "name": "Bobby",
+                "photoUrls": []         
+			  }
             }
           },
           "required": true
@@ -146,7 +150,13 @@
                     "$ref": "#/components/schemas/Pet"
                   },
                   "description": "successful operation"
-                }
+                },
+				"example": [{
+						"name": "Bobby"
+					}, {
+						"name": "Flusky"
+					}
+				]
               }
             }
           },
