@@ -6,7 +6,7 @@ node_js:
 install:
   - npm install
 script: |
-  if [ -n "$GITHUB_API_KEY" ] && [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_TAG" != "" ]; then
+  if [ -n "$GITHUB_API_KEY" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_TAG" != "" ]; then
     sed -b -i "s/XXXVERSIONHEREXXX/$TRAVIS_TAG/g" ./src/environments/environment.prod.ts
   else
     sed -b -i "s/XXXVERSIONHEREXXX/Travis Build $TRAVIS_BUILD_NUMBER/g" ./src/environments/environment.prod.ts
@@ -15,22 +15,23 @@ script: |
   npm run build
 after_success: |
   if [ -n "$GITHUB_API_KEY" ]; then
-    git clone https://github.com/systelab/systelab.github.io.git
-    rm -rf ./systelab.github.io/openapi-reporter-test/*
-    cp -r ./dist/* ./systelab.github.io/openapi-reporter-test
-    sed -i -e "s~base href=\"/\"~base href=\"/openapi-reporter-test/\"~g" ./systelab.github.io/openapi-reporter-test/index.html
-    cd systelab.github.io
-    git add .
-    git -c user.name='travis' -c user.email='travis' commit -m 'New deploy in test from Travis'
-    git push -f -q https://systelab:$GITHUB_API_KEY@github.com/systelab/systelab.github.io
-  fi
-  if [ -n "$GITHUB_API_KEY" ] && [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_TAG" != "" ]; then
-    git clone https://github.com/systelab/systelab.github.io.git
-    rm -rf ./systelab.github.io/openapi-reporter/*
-    cp -r ./dist/* ./systelab.github.io/openapi-reporter
-    sed -i -e "s~base href=\"/\"~base href=\"/openapi-reporter/\"~g" ./systelab.github.io/openapi-reporter/index.html
-    cd systelab.github.io
-    git add .
-    git -c user.name='travis' -c user.email='travis' commit -m 'New deploy in production from Travis'
-    git push -f -q https://systelab:$GITHUB_API_KEY@github.com/systelab/systelab.github.io
+    if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_TAG" != "" ]; then
+      git clone https://github.com/systelab/systelab.github.io.git
+      rm -rf ./systelab.github.io/openapi-reporter/*
+      cp -r ./dist/* ./systelab.github.io/openapi-reporter
+      sed -i -e "s~base href=\"/\"~base href=\"/openapi-reporter/\"~g" ./systelab.github.io/openapi-reporter/index.html
+      cd systelab.github.io
+      git add .
+      git -c user.name='travis' -c user.email='travis' commit -m 'New deploy in production from Travis'
+      git push -f -q https://systelab:$GITHUB_API_KEY@github.com/systelab/systelab.github.io
+    else
+      git clone https://github.com/systelab/systelab.github.io.git
+      rm -rf ./systelab.github.io/openapi-reporter-test/*
+      cp -r ./dist/* ./systelab.github.io/openapi-reporter-test
+      sed -i -e "s~base href=\"/\"~base href=\"/openapi-reporter-test/\"~g" ./systelab.github.io/openapi-reporter-test/index.html
+      cd systelab.github.io
+      git add .
+      git -c user.name='travis' -c user.email='travis' commit -m 'New deploy in test from Travis'
+      git push -f -q https://systelab:$GITHUB_API_KEY@github.com/systelab/systelab.github.io
+    fi
   fi
