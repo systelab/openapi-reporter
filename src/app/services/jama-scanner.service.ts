@@ -432,7 +432,7 @@ export class JAMAScannerService {
 
 	private getModelIdByName(jamaSpec: JamaRESTAPISpec, modelName: string): number {
 
-		const dataType: JamaRESTAPIDataType = jamaSpec.dataTypes.find((dt: JamaRESTAPIDataType) => dt.data.name === modelName);
+		const dataType: JamaRESTAPIDataType = jamaSpec.dataTypes.find((dt: JamaRESTAPIDataType) => !!dt.data && dt.data.name === modelName);
 		if (dataType) {
 			return dataType.specItemId;
 		}
