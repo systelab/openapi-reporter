@@ -106,10 +106,12 @@ export class EndpointService {
 				}
 
 				const schema = openAPIRequestBody.content[mediaType].schema;
-				const schemaReference = schema['$ref'];
-				if (!!schemaReference) {
-					const modelName = schemaReference.startsWith('#/components/schemas/') ? schemaReference.substr(21) : schemaReference;
-					requestBody.modelName = modelName;
+				if (!!schema) {
+					const schemaReference = schema['$ref'];
+					if (!!schemaReference) {
+						const modelName = schemaReference.startsWith('#/components/schemas/') ? schemaReference.substr(21) : schemaReference;
+						requestBody.modelName = modelName;
+					}
 				}
 
 				const example = openAPIRequestBody.content[mediaType].example;
