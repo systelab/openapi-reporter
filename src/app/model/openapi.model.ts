@@ -2,6 +2,7 @@ export interface OpenAPIDocument {
 	openapi: string;
 	info: OpenAPIInfo;
 	servers: OpenAPIServer[];
+	tags?: OpenAPITag[];
 	paths: { [key: string]: OpenAPIPath; };
 	components: OpenAPIComponents;
 }
@@ -14,6 +15,11 @@ export interface OpenAPIInfo {
 
 export interface OpenAPIServer {
 	url: string;
+}
+
+export interface OpenAPITag {
+	name: string;
+	description?: string;
 }
 
 export interface OpenAPIPath {

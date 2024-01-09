@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { SpecReportData, SpecEndpointData, SpecEndpointGroupData } from '@model';
+import { SpecReportData, SpecEndpointData, SpecEndpointGroupData, OpenAPITag } from '@model';
 import { OpenAPIDocument, OpenAPIPath, OpenAPIEndpoint, OpenAPISchema } from '@model';
 import { SpecEndpointComponent } from '@features/report/spec-endpoint/spec-endpoint.component';
 import { EndpointService } from './endpoint.service';
@@ -38,7 +38,7 @@ export class ReportService {
 			for (const method in openAPIPath) {
 				const openAPIEndpoint: OpenAPIEndpoint = openAPIPath[method];
 				const specEndpoint = this.endpointService.parseFromOpenAPI(url, method, openAPIEndpoint);
-				this.addEndpointToReport(specReport, specEndpoint);
+				this.addEndpointToReport(openAPIReport, specReport, specEndpoint);
 			}
 		}
 
@@ -53,7 +53,7 @@ export class ReportService {
 		return specReport;
 	}
 
-	private addEndpointToReport(specReport: SpecReportData, specEndpoint: SpecEndpointData) {
+	private addEndpointToReport(openAPIReport: OpenAPIDocument, specReport: SpecReportData, specEndpoint: SpecEndpointData) {
 
 		const groupName = specEndpoint.groupName;
 		const nEndpointGroups = specReport.endpointGroups.length;
@@ -66,8 +66,23 @@ export class ReportService {
 
 		const newEndpointGroup: SpecEndpointGroupData = {
 			name: groupName,
+			description: this.getEndpointGroupDescription(openAPIReport, groupName),
 			endpoints: [ specEndpoint ]
 		};
+		console.log("New endpoint group", newEndpointGroup);
 		specReport.endpointGroups.push(newEndpointGroup);
+	}
+
+	private getEndpointGroupDescription(openAPIReport: OpenAPIDocument, endpointGroupName: string): string {
+		if (!openAPIReport.tags) {
+			return;
+		}
+
+		const tag: OpenAPITag = openAPIReport.tags.find((tag) => tag.name === endpointGroupName);
+		if (!tag) {
+			return;
+		}
+
+		return tag.description;
 	}
 }
