@@ -12,9 +12,10 @@ div.model-wrapper {
 
 div.model-head {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding-top: 10px;
     padding-bottom: 10px;
-    align-items: center;
     cursor: pointer;
 }
 
@@ -26,6 +27,18 @@ div.model-head .model-name {
     align-items: center;
     overflow-wrap: break-word;
     word-break: break-all;
+}
+
+div.model-head .collapse-button {
+    background-image: url('../../../../assets/img/icons/arrow_down.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    &.expanded {
+      transform: rotate(180deg);
+    }
 }
 
 div.model-body {

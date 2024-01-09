@@ -2,6 +2,7 @@
 
 	<div class="model-head pl-3" (click)="toogleCollapsed()">
 		<div class="model-name">{{model.name}}</div>
+		<div class="mr-4 collapse-button" [ngClass]="{ expanded: !model.collapsed }"></div>
 	</div>
 
 	<div class="model-body pl-3 pt-3 pb-3" *ngIf="!model.collapsed">
