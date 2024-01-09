@@ -14,5 +14,6 @@ export class SpecReportData {
 export class SpecEndpointGroupData {
 	id?: number;
 	name: string;
+	description?: string;
 	endpoints: SpecEndpointData[];
 }

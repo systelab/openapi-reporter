@@ -1,0 +1,14 @@
+<div class="endpoint-group-wrapper" *ngIf="endpointGroup">
+    <div class="endpoint-group-header" (click)="handleHeaderClick()">
+        <div class="ml-3 group-data">
+            <div class="group-title">{{ endpointGroup.name }}</div>
+            <div class="ml-3 group-description" *ngIf="!!endpointGroup.description">{{ endpointGroup.description }}</div>    
+        </div>
+        <div class="mr-3 collapse-button" [ngClass]="{ expanded: expanded }"></div>
+    </div>
+    <div class="endpoint-group-body mb-5" *ngIf="expanded">
+        <div *ngFor="let endpoint of endpointGroup.endpoints">
+            <app-spec-endpoint [endpoint]="endpoint"></app-spec-endpoint>
+        </div>    
+    </div>
+</div>

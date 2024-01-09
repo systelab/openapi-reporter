@@ -1,0 +1,36 @@
+
+ .endpoint-group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    height: 60px;
+  }
+
+  .endpoint-group-header:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .group-data {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  
+  .group-title {
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
+  .collapse-button {
+    background-image: url('../../../../assets/img/icons/arrow_down.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    &.expanded {
+      transform: rotate(180deg);
+    }
+  }

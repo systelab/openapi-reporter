@@ -22,6 +22,7 @@ import { LoginDialog } from './features/login/login-dialog.component';
 
 import { SpecReportComponent } from './features/report/spec-report.component';
 import { SpecSummaryComponent } from './features/report/spec-summary/spec-summary.component';
+import { SpecEndpointGroupComponent } from './features/report/spec-endpoint-group/spec-endpoint-group.component';
 import { SpecEndpointComponent } from './features/report/spec-endpoint/spec-endpoint.component';
 import { SpecModelComponent } from './features/report/spec-model/spec-model.component';
 
@@ -67,6 +68,7 @@ import { SpecChangesTreeComponent } from './components/spec-changes-tree.compone
 		LoginDialog,
 		SpecReportComponent,
 		SpecSummaryComponent,
+		SpecEndpointGroupComponent,
 		SpecEndpointComponent,
 		SpecModelComponent,
 		ReporterDialogComponent,

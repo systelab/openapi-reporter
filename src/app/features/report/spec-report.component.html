@@ -9,10 +9,7 @@
 
 		<h3 class="mt-4 mb-4">Endpoints</h3>
 		<div class="ml-4" *ngFor="let endpointGroup of report.endpointGroups">
-			<div class="endpoint-group mb-2">{{endpointGroup.name}}</div>
-			<div *ngFor="let endpoint of endpointGroup.endpoints">
-				<app-spec-endpoint [endpoint]="endpoint"></app-spec-endpoint>
-			</div>
+			<app-spec-endpoint-group [endpointGroup]="endpointGroup"></app-spec-endpoint-group>
 		</div>
 	
 		<h3 class="mt-5">Models</h3>
