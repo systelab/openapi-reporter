@@ -39,10 +39,16 @@ div.endpoint-wrapper.delete {
 
 div.endpoint-head {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding-top: 6px;
     padding-bottom: 6px;
-    align-items: center;
     cursor: pointer;
+}
+
+div.endpoint-head .data {
+    display: flex;
+    flex-direction: row;
 }
 
 div.endpoint-head .method {
@@ -87,6 +93,18 @@ div.endpoint-head .path {
     overflow-wrap: break-word;
     word-break: break-all;
     padding-left: 10px;
+}
+
+div.endpoint-head .collapse-button {
+    background-image: url('../../../../assets/img/icons/arrow_down.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    &.expanded {
+      transform: rotate(180deg);
+    }
 }
 
 div.endpoint-body {

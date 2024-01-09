@@ -23,12 +23,16 @@
     font-weight: bold;
   }
 
+  .group-description {
+    font-size: 0.8rem;
+  }
+
   .collapse-button {
     background-image: url('../../../../assets/img/icons/arrow_down.svg');
     background-repeat: no-repeat;
     background-size: contain;
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     cursor: pointer;
     &.expanded {
       transform: rotate(180deg);
